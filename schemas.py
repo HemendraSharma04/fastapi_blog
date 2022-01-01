@@ -29,9 +29,10 @@ class User(BaseModel):
 class ArticleBase(BaseModel):
     title:str
     content:str
+    published:bool
     creator_id:int
     
-class ArticleDispaly(BaseModel):
+class ArticleDisplay(BaseModel):
     title:str
     content:str
     published:bool

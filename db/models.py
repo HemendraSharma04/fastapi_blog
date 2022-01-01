@@ -11,10 +11,10 @@ class DbUser(Base):
     username=Column(String)
     email=Column(String)
     password=Column(String)
-    items=relationship('DbArtile',back_populates='user')
+    items=relationship('DbArticle',back_populates='user')
     
 class DbArticle(Base):
-    __tablename__='artiles'
+    __tablename__='articles'
     id=Column(Integer,primary_key=True,index=True)
     title=Column(String)
     content=Column(String)
