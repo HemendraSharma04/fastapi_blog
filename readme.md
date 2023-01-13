@@ -1,4 +1,6 @@
 
 fastapi blog
 
-This can cause conflicts(master)
+
+This can cause conflict
+
