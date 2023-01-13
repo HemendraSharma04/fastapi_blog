@@ -1,1 +1,1 @@
-fastapiu blog
+fastapi blog
