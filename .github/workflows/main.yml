@@ -19,9 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
-      - name: send error
-        if: failure()
-        run: echo "error occured while creating pr"
+     
         
 
       - name: Action-Automerge
@@ -33,3 +31,7 @@ jobs:
           commit_message: "Merge master into develop"
           source: "master"
           target: "develop"
+          
+      - name : test failed
+        if: failure()
+        run: echo "error occured while creating pr"
