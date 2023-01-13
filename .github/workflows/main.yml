@@ -19,6 +19,10 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
+      - name: send error
+        if: failure()
+        run: echo "error occured while creating pr"
+        
 
       - name: Action-Automerge
         uses: mtanzi/action-automerge@v1
