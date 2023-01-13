@@ -31,5 +31,7 @@ jobs:
           commit_message: "Merge master into develop"
           source: "master"
           target: "develop"
+          
+      - name : test failed
         if: failure()
         run: echo "error occured while creating pr"
