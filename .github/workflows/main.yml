@@ -21,8 +21,6 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
      
-        
-
       - name: Action-Automerge
         uses: mtanzi/action-automerge@v1
         with:
@@ -33,6 +31,15 @@ jobs:
           source: "master"
           target: "develop"
           
-      - name : test failed
+      - name : merge conflicts in PR
         if: failure()
-        run: echo "error occured while creating pr"
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: 'CG0L8G78C'
+          slack-message: "GitHub merge conflict \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_BOT_TOKEN }}
+        
+        
+        
