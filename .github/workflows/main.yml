@@ -17,6 +17,7 @@ jobs:
         uses: tretuna/sync-branches@1.4.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          CONTENT_COMPARISON: true
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
      
