@@ -1,4 +1,4 @@
 
 
-## fastapi blog v1
+## fastapi blog v1.0.1
 
