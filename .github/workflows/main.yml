@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - deploy
 
 jobs:
   sync-branches:
@@ -23,7 +24,7 @@ jobs:
 
       - name: test user
         env:
-          USER: ${{ toJSON(github.event.commits[0].committer.username ) }}
+          USER: ${{ toJSON(github.event.commits[0].author.username ) }}
         run: echo "$USER"
 
       - name: Dump GitHub context
