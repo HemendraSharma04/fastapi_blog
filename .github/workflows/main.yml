@@ -20,8 +20,16 @@ jobs:
           CONTENT_COMPARISON: true
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
-     
+      - name: test
+        id: test
+        run: echo "${{steps}}"
+
+      - name: owner
+        id: owner
+        run: echo "${{github.event.pull_request.user.login}}"
+
       - name: Action-Automerge
+        id: "automerge"
         uses: mtanzi/action-automerge@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -30,17 +38,13 @@ jobs:
           commit_message: "Merge master into develop"
           source: "master"
           target: "develop"
-          
-#       - name : merge conflicts in PR
-#         if: failure()
-#         id: slack
-#         uses: slackapi/slack-github-action@v1.23.0
-#         with:
-#           channel-id: 'CG0L8G78C'
-#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-#         env:
-#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-        
-        
-        
+      # - name: merge conflicts in PR
+      #   if: failure()
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n ${{}} "
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
