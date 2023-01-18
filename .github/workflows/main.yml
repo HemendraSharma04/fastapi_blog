@@ -23,7 +23,8 @@ jobs:
 
       - name: test
         id: test
-        User: ${{github.event.pull_request.user.login}}
+        with:
+          User: ${{github.event.pull_request.user.login}}
         run: echo "${{steps}}"
 
       - name: Action-Automerge
