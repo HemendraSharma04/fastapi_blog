@@ -52,7 +52,7 @@ jobs:
         env:
           SLACK_USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
 
-        run: echo "${{$SLACK_USER}}"
+        run: echo "${{ $SLACK_USER }}"
 
       - name: Dump GitHub context
         env:
