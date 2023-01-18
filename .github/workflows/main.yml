@@ -83,10 +83,10 @@ jobs:
         env:
           
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
+          USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
           SLACK_USER: ${{env.USER}} 
 
         uses: slackapi/slack-github-action@v1.23.0
         with:
           channel-id: "CG64UFLLW"
-          slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{ format('vars.{0}',steps.string.outputs.uppercase) }} }"
+          slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{env.SLACK_USER}} }"
