@@ -20,8 +20,10 @@ jobs:
           CONTENT_COMPARISON: true
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
-          PULL_REQUEST_BODY: "${{ github.event.pull_request.head.repo.owner.login }}"
-          PULL_REQUEST_TITLE: "${{ github.event.pull_request.head.repo.owner.login }}"
+          PULL_REQUEST_BODY: "${{ github.event.pull_request.user.login }}"
+          PULL_REQUEST_TITLE: "${{ github.event.pull_request.user.login }}"
+      - name: test
+        run: echo ${{ github}}
 
       - name: Action-Automerge
         id: "automerge"
