@@ -20,13 +20,12 @@ jobs:
           CONTENT_COMPARISON: true
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
-          PULL_REQUEST_BODY: "${{ github.event.pull_request.user.login }}"
-          PULL_REQUEST_TITLE: "${{ github.event.pull_request.user.login }}"
+
         env:
           USER: ${{ github.event.pull_request.user.login }}
 
       - name: test
-        run: echo "$USER"
+        run: echo "${{USER}}"
 
       - name: test1
         run: echo "$github.event.pull_request.user.login"
