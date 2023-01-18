@@ -21,11 +21,13 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
 
-        env:
-          USER: ${{ toJSON(github.triggering_actor) }}
+        
 
-      - name: test
-        run: echo " $USER is the user"
+      - name: test user
+        env:
+          USER: ${{ toJSON(github.event.commits.committer.username) }}
+        run: echo "$USER"
+        
 
       - name: Dump GitHub context
         env:
