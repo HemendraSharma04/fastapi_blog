@@ -21,13 +21,10 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
 
-        
-
       - name: test user
         env:
-          USER: ${{ toJSON(github.event.commits[0].committer.username) }}
+          USER: ${{ toJSON(github.event.commits[0].committer.username ) }}
         run: echo "$USER"
-        
 
       - name: Dump GitHub context
         env:
