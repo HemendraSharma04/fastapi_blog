@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-      - deploy
+      - develop
 
 jobs:
   sync-branches:
