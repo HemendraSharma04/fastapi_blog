@@ -51,7 +51,7 @@ jobs:
       - name: test secret
         env:
           USER: ${{ toJSON(github.event.commits[0].author.username ) }}
-          SLACK_USER: ${{ format('vars.SLACK_{0}',USER}}
+          SLACK_USER: ${{ format('vars.SLACK_{0}',${{ toJSON(github.event.commits[0].author.username ) }} }}
          
           
         run: echo "@$SLACK_USER"
