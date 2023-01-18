@@ -50,9 +50,9 @@ jobs:
 
       - name: test secret
         env:
-          SLACK_USER: ${{ secrets.SLACK_$USER }}
+          SLACK_USER: ${{ vars.SLACK_$USER }}
           USER: ${{ toJSON(github.event.commits[0].author.username ) }}
-        run: echo "@${{secrets.SLACK_$USER}}"
+        run: echo "@$SLACK_USER"
 
       - name: Dump GitHub context
         env:
