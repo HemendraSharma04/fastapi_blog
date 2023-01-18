@@ -25,7 +25,7 @@ jobs:
           USER: ${{ github.event.pull_request.user.login }}
 
       - name: test
-        run: echo "${{USER}}"
+        run: echo "$USER"
 
       - name: test1
         run: echo "$github.event.pull_request.user.login"
