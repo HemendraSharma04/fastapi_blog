@@ -46,12 +46,16 @@ jobs:
       - name: test uppercase
         id: string
         uses: ASzc/change-string-case-action@v5
+        env:
+          
+          USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
+          SLACK_USER: ${{env.USER}}
         with:
-          string: XyZzY
+          string: ${{USER}}
         
       - name : print
         id: step2
-        run: echo ${{ steps.string.outputs.lowercase }}
+        run: echo ${{ steps.string.outputs.uppercase }}
     
 
       - name: test secret
@@ -61,6 +65,8 @@ jobs:
           SLACK_USER: ${{env.USER}} 
 
         run: echo "$SLACK_USER"
+        
+      
 
       - name: Dump GitHub context
         env:
@@ -91,4 +97,4 @@ jobs:
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
 #           channel-id: "CG64UFLLW"
-#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{env.SLACK_USER}} }"
+#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{ steps.string.outputs.uppercase }} }"
