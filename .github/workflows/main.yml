@@ -58,14 +58,6 @@ jobs:
         run: echo ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
     
 
-      - name: test secret
-        env:
-          
-          USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
-          SLACK_USER: ${{env.USER}} 
-
-        run: echo "$SLACK_USER"
-        
       
 
       - name: Dump GitHub context
@@ -85,16 +77,16 @@ jobs:
           source: "master"
           target: "develop"
 
-#       - name: merge conflicts in PR
-#         if: failure()
-#         id: slack
-#         env:
+      - name: merge conflicts in PR
+        if: failure()
+        id: slack
+        env:
           
-#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-#           USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
-#           SLACK_USER: ${{env.USER}} 
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
+          SLACK_USER: ${{env.USER}} 
 
-#         uses: slackapi/slack-github-action@v1.23.0
-#         with:
-#           channel-id: "CG64UFLLW"
-#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{ steps.string.outputs.uppercase }} }"
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{ format('vars.{0}',steps.string.outputs.uppercase) }} }"
