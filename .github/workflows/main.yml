@@ -20,8 +20,8 @@ jobs:
           CONTENT_COMPARISON: true
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
-          PULL_REQUEST_BODY: "${{github.event.pull_request.head.repo.owner.login}}"
-          PULL_REQUEST_TITLE: "${{github.event.pull_request.head.repo.owner.login}}"
+          PULL_REQUEST_BODY: "${{ github.event.pull_request.head.repo.owner.login }}"
+          PULL_REQUEST_TITLE: "${{ github.event.pull_request.head.repo.owner.login }}"
 
       - name: Action-Automerge
         id: "automerge"
@@ -30,7 +30,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
           merge_method: "squash"
-          commit_message: "${{github.event.pull_request.head.repo.owner.login}"
+          commit_message: "${{ github.event.pull_request.head.repo.owner.login }}"
           source: "master"
           target: "develop"
 
