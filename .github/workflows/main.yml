@@ -22,7 +22,7 @@ jobs:
           TO_BRANCH: "develop"
 
         env:
-          USER: ${{ github.event.pull_request.user.login }}
+          USER: ${{ toJSON(github.triggering_actor) }}
 
       - name: test
         run: echo " $USER is the user"
