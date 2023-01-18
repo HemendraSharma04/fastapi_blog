@@ -30,7 +30,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
           merge_method: "squash"
-          commit_message: "{{github.event.pull_request.head.repo.owner.login}"
+          commit_message: "${{github.event.pull_request.head.repo.owner.login}"
           source: "master"
           target: "develop"
 
