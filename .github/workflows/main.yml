@@ -25,7 +25,7 @@ jobs:
           USER: ${{ toJSON(github.triggering_actor) }}
 
       - name: test
-        run: echo " ${{USER}} is the user"
+        run: echo " $USER is the user"
 
       - name: Dump GitHub context
         env:
