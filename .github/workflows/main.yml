@@ -20,13 +20,10 @@ jobs:
           CONTENT_COMPARISON: true
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
+          User: ${{github.event.pull_request.user.login}}
       - name: test
         id: test
         run: echo "${{steps}}"
-
-      - name: owner
-        id: owner
-        run: echo "${{github.event.pull_request.user.login}}"
 
       - name: Action-Automerge
         id: "automerge"
