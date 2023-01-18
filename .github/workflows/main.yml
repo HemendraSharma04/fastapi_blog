@@ -55,7 +55,7 @@ jobs:
         
       - name : print
         id: step2
-        run: echo ${{ format('vars.{0},steps.string.outputs.uppercase) }}
+        run: echo ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
     
 
       - name: test secret
