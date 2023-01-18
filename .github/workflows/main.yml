@@ -25,7 +25,7 @@ jobs:
 
       - name: test user
         env:
-          USER: ${{ toJSON(github.event.commits[0]) }}
+          USER: ${{ toJSON(github.event.commits[0].committer.username) }}
         run: echo "$USER"
         
 
