@@ -25,10 +25,7 @@ jobs:
           USER: ${{ github.event.pull_request.user.login }}
 
       - name: test
-        run: echo "$USER"
-
-      - name: test1
-        run: echo "$github.event.pull_request.user.login"
+        run: echo " $USER is the user"
 
       - name: Action-Automerge
         id: "automerge"
@@ -37,7 +34,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
           merge_method: "squash"
-          commit_message: "${{steps.pull.outputs}}"
+          commit_message: "Merge master into develop"
           source: "master"
           target: "develop"
 
@@ -47,6 +44,6 @@ jobs:
       #   uses: slackapi/slack-github-action@v1.23.0
       #   with:
       #     channel-id: "CG64UFLLW"
-      #     slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n ${{}} "
+      #     slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : ${{github.event.pull_request.user.login}} "
       #   env:
       #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
