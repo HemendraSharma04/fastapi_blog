@@ -48,14 +48,14 @@ jobs:
         uses: ASzc/change-string-case-action@v5
         env:
           
-          USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
+          USER: ${{ format('SLACK_{0}',github.event.commits[0].author.username ) }}
           SLACK_USER: ${{env.USER}}
         with:
           string: ${{env.USER}}
         
       - name : print
         id: step2
-        run: echo ${{ steps.string.outputs.uppercase }}
+        run: echo ${{ format('vars.{0},steps.string.outputs.uppercase) }}
     
 
       - name: test secret
