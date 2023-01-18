@@ -51,7 +51,7 @@ jobs:
           USER: ${{ format('vars.SLACK_{0}',github.event.commits[0].author.username ) }}
           SLACK_USER: ${{env.USER}}
         with:
-          string: ${{USER}}
+          string: ${{env.USER}}
         
       - name : print
         id: step2
