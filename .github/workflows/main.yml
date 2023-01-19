@@ -113,8 +113,8 @@ jobs:
           
         run: | 
           echo ${{env.USERNAME}}
-          echo ${{TEST1}}
-          echo ${{TEST2}}
+          echo ${{env.TEST1}}
+          echo ${{env.TEST2}}
           
 #         run: |
 #           import os
