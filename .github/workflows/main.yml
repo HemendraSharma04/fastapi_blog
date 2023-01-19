@@ -125,6 +125,15 @@ jobs:
         run: |
           echo ${{steps.step_two.outputs.test_value}}
           
+      - name: Find Slack user
+        id: find-slack-user
+        uses: scribd/find-slack-user-action@v1
+        with:
+          slack-token: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      - name: Print Slack user
+        run: echo "${{ steps.find-slack-user.outputs.username }}"
+          
           
 #       - name: Set the value
 #         id: step_one
