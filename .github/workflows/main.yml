@@ -105,12 +105,12 @@ jobs:
           
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           USER: ${{github.event.commits[0].author.username}}
-          USERNAME: ${{ steps.username.outputs.env.USER }}
+          USERNAME: ${{ steps.username.outputs.${{env.USER}} }}
           
           
         run: | 
           echo ${{env.USERNAME}}
-          echo
+          
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
 #           channel-id: "CG64UFLLW"
