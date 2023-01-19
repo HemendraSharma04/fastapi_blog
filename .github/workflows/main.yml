@@ -118,7 +118,7 @@ jobs:
           
         run: | 
           echo ${{ FINAL_USER = env.USERNAME}} >> $GITHUB_ENV
-          echo ${{env.FINAL_USER}}
+          
           echo ${{env.TEST2}}
           
           
