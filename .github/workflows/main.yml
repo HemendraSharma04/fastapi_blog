@@ -111,13 +111,15 @@ jobs:
           
           
           
-#         run: | 
-#           echo ${{env.USERNAME}}
+        run: | 
+          echo ${{env.USERNAME}}
+          echo ${{TEST1}}
+          echo ${{TEST2}}
           
-        run: |
-          import os
-          print(test)
-          shell: python
+#         run: |
+#           import os
+#           print(test)
+#           shell: python
           
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
