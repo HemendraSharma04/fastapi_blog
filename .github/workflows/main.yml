@@ -122,7 +122,7 @@ jobs:
 #           echo ${{env.TEST2}}
           
         run: |
-          import os
+         
           print(test)
           shell: python
           
