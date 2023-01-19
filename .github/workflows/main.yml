@@ -118,7 +118,7 @@ jobs:
       - name: Use the value
         id: step_two
         run: |
-          echo "test_value=${{ ${{ env.action_state }} }}" >> $GITHUB_ENV
+          echo "test_value=${{ env.action_state }}" >> $GITHUB_ENV
           
       - name: Use the value again
         id: step_three
