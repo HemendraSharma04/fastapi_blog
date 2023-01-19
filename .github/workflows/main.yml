@@ -126,7 +126,7 @@ jobs:
       - name: Use the value
         id: step_two
         run: |
-          echo "${{ env.FINAL_USER }}"
+         
           echo "$FINAL_USER"
           
           echo "${{steps.username.outputs.HemendraSharma04}}"
