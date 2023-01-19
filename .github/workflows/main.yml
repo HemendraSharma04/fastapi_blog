@@ -127,6 +127,7 @@ jobs:
         id: step_two
         run: |
           echo "${{ env.FINAL_USER }}"
+          echo "${{steps.username.outputs.HemendraSharma04}}"
           
           
 #         uses: slackapi/slack-github-action@v1.23.0
