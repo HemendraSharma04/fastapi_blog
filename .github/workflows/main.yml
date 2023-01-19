@@ -119,7 +119,7 @@ jobs:
         run: | 
           
           echo "test"
-          echo "FINAL_USER = ${{env.USERNAME}}" >> $GITHUB_ENV
+          echo "FINAL_USER = yellow" >> $GITHUB_ENV
           
           echo ${{env.TEST2}}
      
