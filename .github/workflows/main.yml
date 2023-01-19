@@ -124,7 +124,7 @@ jobs:
         run: |
          
           print(test)
-          shell: python
+          shell: python {0}
           
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
