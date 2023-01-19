@@ -104,7 +104,7 @@ jobs:
         env:
           
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          USER: ${{env.SLACK_USER}}
+          USER: github.event.commits[0].author.username
           
           
         run: echo ${{ steps.username.outputs.HemendraSharma04 }}
