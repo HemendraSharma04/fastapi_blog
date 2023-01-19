@@ -58,17 +58,30 @@ jobs:
         id: user
         env:
           USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
- 
-        
         run: |
-          echo "SLACK_USER_TEMP= $USER" >> $GITHUB_ENV
+          echo "SLACK_USER= $USER" >> $GITHUB_ENV
           
         
        
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "SLACK_USER = $SLACK_USER_TEMP" >> $GITHUB_ENV
+        run: echo "$GITHUB_CONTEXT"
+        
+      - name: variable-mapper
+        uses: kanga333/variable-mapper@v0.3.0
+        with:
+          key: "${{github.base_ref}}"
+          map: |
+            {
+              "users" : {
+              "HemendraSharma04" : "Hemendra"
+          
+            },
+            }
+          export_to: env,log,output
+        
+        
         
 
       - name: Action-Automerge
@@ -92,7 +105,7 @@ jobs:
           USER: ${{env.SLACK_USER}}
           
           
-        run: echo "$USER"
+        run: echo ${{format(${{env.USER}})}}
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
 #           channel-id: "CG64UFLLW"
