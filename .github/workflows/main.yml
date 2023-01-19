@@ -117,7 +117,9 @@ jobs:
           
           
         run: | 
-          echo "toJSON(${{ FINAL_USER = env.USERNAME}})" >> $GITHUB_ENV
+          
+          echo "test"
+          echo "FINAL_USER = ${{env.USERNAME}}" >> $GITHUB_ENV
           
           echo ${{env.TEST2}}
           
