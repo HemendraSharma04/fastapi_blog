@@ -124,6 +124,7 @@ jobs:
         id: step_three
         run: |
           echo "${{ env.test_value }}"
+          echo "::set-output name=random-id::$(echo ${{ env.test_value }} )"
           
           
 #       - name: Set the value
