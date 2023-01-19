@@ -54,10 +54,10 @@ jobs:
         with:
           string: ${{env.USER}}
         
-      - name : set user
-        id: user
-        env:
-          USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
+#       - name : set user
+#         id: user
+#         env:
+#           USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
 #         run: |
 #           echo "SLACK_USER= $USER" >> $GITHUB_ENV
           
@@ -96,10 +96,10 @@ jobs:
 #           source: "master"
 #           target: "develop"
       
-      - name: setup python
-        uses: actions/setup-python@v4.2.0
-        with:
-          python-version: 3.10.8
+#       - name: setup python
+#         uses: actions/setup-python@v4.2.0
+#         with:
+#           python-version: 3.10.8
 
       
 
@@ -111,14 +111,9 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           USER: ${{github.event.commits[0].author.username}}
           USERNAME: "steps.username.outputs.$USER"
-          
-          TEST2 : "$USERNAME"
-          
-          
-          
         run: | 
           
-          echo "test"
+          
           echo "action_state = yellow" >> $GITHUB_ENV
       
      
