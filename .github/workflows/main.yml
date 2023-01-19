@@ -105,11 +105,16 @@ jobs:
           
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           USER: ${{github.event.commits[0].author.username}}
-          USERNAME: '${{steps.username.outputs.$USER}}'
+          USERNAME: 'steps.username.outputs.$USER'
           
           
-        run: | 
-          echo ${{env.USERNAME}}
+#         run: | 
+#           echo ${{env.USERNAME}}
+          
+        run: |
+          import os
+          print(os.environ['USER'])
+          shell: python
           
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
