@@ -89,7 +89,7 @@ jobs:
         env:
           
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          USER: ${{SLACK_USER}}
+          USER: ${{env.SLACK_USER}}
           
           
         run: echo "$USER"
