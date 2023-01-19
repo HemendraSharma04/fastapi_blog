@@ -96,6 +96,11 @@ jobs:
           source: "master"
           target: "develop"
       
+      - name: setup python
+        uses: actions/setup-python@v4.2.0
+        with:
+          python-version: 3.10.8
+
       
 
       - name: merge conflicts in PR
@@ -111,15 +116,15 @@ jobs:
           
           
           
-        run: | 
-          echo ${{env.USERNAME}}
-          echo ${{env.TEST1}}
-          echo ${{env.TEST2}}
+#         run: | 
+#           echo ${{env.USERNAME}}
+#           echo ${{env.TEST1}}
+#           echo ${{env.TEST2}}
           
-#         run: |
-#           import os
-#           print(test)
-#           shell: python
+        run: |
+          import os
+          print(test)
+          shell: python
           
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
