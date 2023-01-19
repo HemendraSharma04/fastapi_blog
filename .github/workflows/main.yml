@@ -55,8 +55,14 @@ jobs:
           string: ${{env.USER}}
         
       - name : print
-        id: step2
-        run: echo ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
+        id: user
+        env:
+          USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
+#           SLACK_USER: ${{env.USER}} 
+        
+        run: echo "SLACK_USER= $USER" >> $GITHUB_ENV 
+       
+       
     
 
       
@@ -64,7 +70,8 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+#         run: echo "$GITHUB_CONTEXT"
+        run: echo "$SLACK_USER"
 
       - name: Action-Automerge
         if: Success()
@@ -85,8 +92,8 @@ jobs:
           
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
-          SLACK_USER: ${{env.USER}} 
-        run: echo ${{SLACK_USER}}
+          
+        run: echo "$SLACK_USER"
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
 #           channel-id: "CG64UFLLW"
