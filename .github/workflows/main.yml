@@ -131,6 +131,15 @@ jobs:
           
           echo "${{steps.username.outputs.HemendraSharma04}}"
           
+      - name: Set the value
+        id: step_one
+        run: |
+          echo "action_state=yellow" >> $GITHUB_ENV
+      - name: Use the value
+        id: step_two0
+        run: |
+          echo "${{ env.action_state }}" 
+          
           
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
