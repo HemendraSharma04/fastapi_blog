@@ -118,13 +118,12 @@ jobs:
       - name: Use the value
         id: step_two
         run: |
-          echo "test_value=${{ env.action_state }}" >> $GITHUB_ENV
+          echo "test_value=${{ env.action_state }}" >> $GITHUB_OUTPUT
           
       - name: Use the value again
         id: step_three
         run: |
-          echo "${{ env.test_value }}"
-          echo "::set-output name=random-id::$(echo ${{ env.test_value }} )"
+          echo ${{steps.step_two.outputs.test_value}}
           
           
 #       - name: Set the value
