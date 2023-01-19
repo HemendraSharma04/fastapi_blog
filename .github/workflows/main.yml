@@ -62,13 +62,13 @@ jobs:
         
         run: |
           echo "SLACK_USER_TEMP= $USER" >> $GITHUB_ENV
-          echo "SLACK_USER = $SLACK_USER_TEMP" >> $GITHUB_ENV
+          
         
        
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: echo "SLACK_USER = $SLACK_USER_TEMP" >> $GITHUB_ENV
         
 
       - name: Action-Automerge
