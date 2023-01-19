@@ -58,8 +58,8 @@ jobs:
         id: user
         env:
           USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
-        run: |
-          echo "SLACK_USER= $USER" >> $GITHUB_ENV
+#         run: |
+#           echo "SLACK_USER= $USER" >> $GITHUB_ENV
           
         
        
@@ -119,26 +119,23 @@ jobs:
         run: | 
           
           echo "test"
-          echo "FINAL_USER = yellow" >> $GITHUB_ENV
-          
-          echo ${{env.TEST2}}
+          echo "action_state = yellow" >> $GITHUB_ENV
+      
      
       - name: Use the value
         id: step_two
         run: |
-         
-          echo "$FINAL_USER"
-          
+          echo "${{ env.action_state }}"
           echo "${{steps.username.outputs.HemendraSharma04}}"
           
-      - name: Set the value
-        id: step_one
-        run: |
-          echo "action_state=yellow" >> $GITHUB_ENV
-      - name: Use the value
-        id: step_two0
-        run: |
-          echo "${{ env.action_state }}" 
+#       - name: Set the value
+#         id: step_one
+#         run: |
+#           echo "action_state=yellow" >> $GITHUB_ENV
+#       - name: Use the value
+#         id: step_two0
+#         run: |
+#           echo "${{ env.action_state }}" 
           
           
 #         uses: slackapi/slack-github-action@v1.23.0
