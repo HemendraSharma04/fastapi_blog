@@ -69,6 +69,7 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
         
       - name: variable-mapper
+        id: username
         uses: kanga333/variable-mapper@v0.3.0
         with:
           key: "${{github.base_ref}}"
@@ -78,7 +79,7 @@ jobs:
               "HemendraSharma04" : "Hemendra"
               }
             }
-          export_to: env
+          export_to: env,log,output
         
         
         
@@ -106,7 +107,7 @@ jobs:
           USER: ${{env.SLACK_USER}}
           
           
-        run: echo ${{ env.USER }}
+        run: echo ${{ steps.username.outputs.HemendraSharma04 }}
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
 #           channel-id: "CG64UFLLW"
