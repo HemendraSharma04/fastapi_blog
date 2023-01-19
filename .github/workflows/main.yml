@@ -105,7 +105,7 @@ jobs:
           USER: ${{env.SLACK_USER}}
           
           
-        run: echo "${{format('{0}',$SLACK_BOT_TOKEN)}}"
+        run: echo $SLACK_BOT_TOKEN
 #         uses: slackapi/slack-github-action@v1.23.0
 #         with:
 #           channel-id: "CG64UFLLW"
