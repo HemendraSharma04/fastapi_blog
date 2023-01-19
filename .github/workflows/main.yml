@@ -122,6 +122,11 @@ jobs:
           echo "FINAL_USER = ${{env.USERNAME}}" >> $GITHUB_ENV
           
           echo ${{env.TEST2}}
+     
+      - name: Use the value
+        id: step_two
+        run: |
+          echo "${{ env.FINAL_USER }}"
           
           
 #         uses: slackapi/slack-github-action@v1.23.0
