@@ -103,6 +103,8 @@ jobs:
           USER: ${{github.event.commits[0].author.username}}
           USERNAME: "steps.username.outputs.$USER"
         run: |
+          test : $USERNAME
+          echo "$test"
           echo "action_state=${{env.USERNAME}}" >> $GITHUB_ENV
 
       - name: Use the value
