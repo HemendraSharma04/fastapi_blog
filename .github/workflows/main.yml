@@ -68,18 +68,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
         
-      - name: variable-mapper
-        uses: kanga333/variable-mapper@v0.3.0
-        with:
-          key: "${{github.base_ref}}"
-          map: |
-            {
-              "users" : {
-              "HemendraSharma04" : "Hemendra"
-          
-            },
-            }
-          export_to: env,log,output
+      
         
         
         
@@ -95,6 +84,18 @@ jobs:
           commit_message: "Merge master into develop"
           source: "master"
           target: "develop"
+      
+      - name: variable-mapper
+        uses: kanga333/variable-mapper@v0.3.0
+        with:
+          key: "${{github.base_ref}}"
+          map: |
+            {
+              "users" : {
+              "HemendraSharma04" : "Hemendra"
+              }
+            }
+          export_to: env,log,output
 
       - name: merge conflicts in PR
         if: failure()
