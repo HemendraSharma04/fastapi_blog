@@ -84,17 +84,17 @@ jobs:
         
         
 
-      - name: Action-Automerge
-        if: Success()
-        id: "automerge"
-        uses: mtanzi/action-automerge@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
-          merge_method: "squash"
-          commit_message: "Merge master into develop"
-          source: "master"
-          target: "develop"
+#       - name: Action-Automerge
+#         if: Success()
+#         id: "automerge"
+#         uses: mtanzi/action-automerge@v1
+#         with:
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
+#           merge_method: "squash"
+#           commit_message: "Merge master into develop"
+#           source: "master"
+#           target: "develop"
       
       - name: setup python
         uses: actions/setup-python@v4.2.0
@@ -104,7 +104,7 @@ jobs:
       
 
       - name: merge conflicts in PR
-        if: failure()
+        #if: failure()
         id: slack
         env:
           
