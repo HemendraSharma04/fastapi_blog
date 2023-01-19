@@ -49,7 +49,7 @@ jobs:
         env:
           
           USER: ${{ format('SLACK_{0}',github.event.commits[0].author.username ) }}
-          SLACK_USER: ${{env.USER}}
+          SLACK_USER: "${{env.USER}}"
           
         with:
           string: ${{env.USER}}
@@ -111,7 +111,7 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           USER: ${{github.event.commits[0].author.username}}
           USERNAME: "steps.username.outputs.$USER"
-          TEST1 : ${{USERNAME}}
+          TEST1 : "${{env.USERNAME}}"
           TEST2 : "$USERNAME"
           
           
