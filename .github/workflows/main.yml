@@ -115,6 +115,7 @@ jobs:
           echo ${{env.test_version}}
           echo "${{env.test_version}}"
           echo $USER
+          echo ${{steps.username.outputs.HEMENDRASHARMA04}}
          
 
       - name: Use the value
