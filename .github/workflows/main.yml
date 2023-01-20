@@ -103,7 +103,7 @@ jobs:
           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
         run: |
           echo "action_state=${{env.USER}}" >> $GITHUB_ENV
-          echo $USER
+          eval echo $USER
           echo ${{steps.username.outputs.HEMENDRASHARMA04}}
          
 
