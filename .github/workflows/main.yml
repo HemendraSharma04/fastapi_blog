@@ -102,11 +102,13 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           USER: ${{github.event.commits[0].author.username}}
           USERNAME: "steps.username.outputs.$USER"
+          TEST_USER: format()
         run: |
           
           echo "action_state=$(echo $( echo ${{env.USERNAME}}))" >> $GITHUB_ENV
           export test_version=$(echo ${{env.USERNAME}})
           echo ::set-output name=version::$test_version
+          echo $test_version
 
       - name: Use the value
         id: step_two
