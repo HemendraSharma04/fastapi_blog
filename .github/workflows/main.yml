@@ -114,17 +114,17 @@ jobs:
 
 
 
-#       - name: merge conflicts in PR
-#         if: failure()
-#         id: slack
-#         env:
-#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
+      - name: merge conflicts in PR
+        if: failure()
+        id: slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
         
-#         uses: slackapi/slack-github-action@v1.23.0
-#         with:
-#           channel-id: "CG64UFLLW"
-#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{env.SLACK_USER}} }"
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{env.SLACK_USER}} }"
 
           
      
