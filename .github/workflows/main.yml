@@ -84,8 +84,10 @@ jobs:
           USER: ${{steps.string.outputs.uppercase}}
         run: |
           import os
+          import json
           usr=os.environ['USER']
-          users={"HEMENDRASHARMA04":"U04EZK02Z5H"}
+          with open('users.json', 'r') as openfile:
+            users = json.load(openfile)
           print(users[usr])
           env_file = os.getenv('GITHUB_ENV')
           with open(env_file, "w") as myfile:
@@ -111,14 +113,14 @@ jobs:
           source: "master"
           target: "develop"
 
-      - name: merge conflicts in PR
-        if: failure()
-        id: slack
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
+#       - name: merge conflicts in PR
+#         if: failure()
+#         id: slack
+#         env:
+#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
 
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
+#         uses: slackapi/slack-github-action@v1.23.0
+#         with:
+#           channel-id: "CG64UFLLW"
+#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
