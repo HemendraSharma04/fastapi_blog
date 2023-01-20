@@ -131,7 +131,8 @@ jobs:
           print(users[usr])
           env_file = os.getenv('GITHUB_ENV')
           with open(env_file, "a") as myfile:
-            myfile.write(str(SLACK_USER=users[usr]))
+            temp="SLACK_USER"+"="+users[usr]
+            myfile.write(temp)
         shell: python {0}
         
       - name: get env variable
