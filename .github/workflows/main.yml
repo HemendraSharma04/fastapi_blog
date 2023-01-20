@@ -5,29 +5,29 @@ on:
       - master
 
 jobs:
-  # migrations_linter_job:
-  #       runs-on: ubuntu-latest
-  #       name: Alert for checking breaking migrations
-  #       steps:
-  #           - uses: actions/checkout@v3
-  #             with:
-  #                 fetch-depth: 0
+#   migrations_linter_job:
+#         runs-on: ubuntu-latest
+#         name: Alert for checking breaking migrations
+#         steps:
+#             - uses: actions/checkout@v3
+#               with:
+#                   fetch-depth: 0
 
-  #           - name: Get changed files
-  #             id: changed-files
-  #             uses: tj-actions/changed-files@v31.0.0
+#             - name: Get changed files
+#               id: changed-files
+#               uses: tj-actions/changed-files@v31.0.0
 
-  #           - name: setup python
-  #             uses: actions/setup-python@v4.2.0
-  #             with:
-  #                 python-version: 3.10.8
+#             - name: setup python
+#               uses: actions/setup-python@v4.2.0
+#               with:
+#                   python-version: 3.10.8
 
-  #           - name: Run migrations linter
-  #             run: |
-  #                 python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+#             - name: Run migrations linter
+#               run: |
+#                   python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
   sync-branches:
-    # needs: migrations_linter_job
+    #needs: migrations_linter_job
     runs-on: ubuntu-latest
     name: Syncing branches
     steps:
@@ -59,13 +59,6 @@ jobs:
         with:
           string: ${{env.GITHUB_USER}}
 
-      #       - name : set user
-      #         id: user
-      #         env:
-      #           USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
-      #         run: |
-      #           echo "SLACK_USER= $USER" >> $GITHUB_ENV
-
       - name: GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
@@ -83,46 +76,12 @@ jobs:
               }
             }
           export_to: env,log,output
-
-      #       - name: Action-Automerge
-      #         if: Success()
-      #         id: "automerge"
-      #         uses: mtanzi/action-automerge@v1
-      #         with:
-      #           github_token: ${{ secrets.GITHUB_TOKEN }}
-      #           pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
-      #           merge_method: "squash"
-      #           commit_message: "Merge master into develop"
-      #           source: "master"
-      #           target: "develop"
-
-      #       - name: setup python
-      #         uses: actions/setup-python@v4.2.0
-      #         with:
-      #           python-version: 3.10.8
-
-#       - name: merge conflicts in PR
-#         #if: failure()
-#         id: slack
-#         env:
-#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
-#         run: |
-#           echo "action_state=${{env.USER}}" >> $GITHUB_ENV
-#           expr echo $USER
-#           echo ${{steps.username.outputs.HEMENDRASHARMA04}}
-          
-          
-      - name: test manual api calling
-        id: api
-        run: |
-          curl -X GET "https://dummy.restapiexample.com/api/v1/employee/2"
           
       - name: test py shell
         id: pshell
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
+
           USER: ${{steps.string.outputs.uppercase}}
         run: |
           import os
@@ -130,7 +89,7 @@ jobs:
           users={"HEMENDRASHARMA04":"Hemendra"}
           print(users[usr])
           env_file = os.getenv('GITHUB_ENV')
-          with open(env_file, "a") as myfile:
+          with open(env_file, "w") as myfile:
             temp="SLACK_USER"+"="+users[usr]
             myfile.write(temp)
         shell: python {0}
@@ -140,6 +99,37 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo ${{env.SLACK_USER}}
+
+      - name: Action-Automerge
+        if: Success()
+        id: "automerge"
+        uses: mtanzi/action-automerge@v1
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
+            merge_method: "squash"
+            commit_message: "Merge master into develop"
+            source: "master"
+            target: "develop"
+
+
+
+#       - name: merge conflicts in PR
+#         if: failure()
+#         id: slack
+#         env:
+#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
+        
+#         uses: slackapi/slack-github-action@v1.23.0
+#         with:
+#           channel-id: "CG64UFLLW"
+#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{env.SLACK_USER}} }"
+
+          
+     
+          
+
           
         
         
@@ -147,15 +137,9 @@ jobs:
           
          
           
-#       - name : get response
-#         run: |
-#           echo ${{steps.id.outputs.response}}
+
        
          
 
 
 
-#         uses: slackapi/slack-github-action@v1.23.0
-#         with:
-#           channel-id: "CG64UFLLW"
-#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : @${{env.USER}} }"
