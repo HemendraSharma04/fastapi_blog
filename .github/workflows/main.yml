@@ -104,8 +104,9 @@ jobs:
           USERNAME: "steps.username.outputs.$USER"
         run: |
           
-          echo "action_state=${{env.USERNAME}}" >> $GITHUB_ENV
-          echo "$USERNAME"
+          echo "action_state=$(echo ${{env.USERNAME}})" >> $GITHUB_ENV
+          export test_version=$(echo ${{env.USERNAME}})
+          echo $test_version
 
       - name: Use the value
         id: step_two
