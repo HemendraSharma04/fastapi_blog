@@ -116,7 +116,8 @@ jobs:
       - name: test manual api calling
         id: api
         run: |
-          response =$(curl -X GET "https://reqres.in/api/users/1") >> $GITHUB_OUTPUT
+          echo "response =$(curl -X GET 'https://reqres.in/api/users/1')" >> $GITHUB_OUTPUT
+          echo "response from curl= $response" 
           
       - name : get response
         run: |
