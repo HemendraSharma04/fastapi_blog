@@ -47,7 +47,7 @@ jobs:
         id: string
         uses: ASzc/change-string-case-action@v5
         env:
-          GITHUB_USER: ${{ github.event.commits[0].author.username ) }}
+          GITHUB_USER: ${{ github.event.commits[0].author.username }}
           SLACK_USER: "${{env.GITHUB_USER}}"
 
         with:
