@@ -140,7 +140,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo ${{env.SLACK_USER}}
-          echo ${{env}}
+          
         
         
         
