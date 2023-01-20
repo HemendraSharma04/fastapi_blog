@@ -113,15 +113,21 @@ jobs:
 #           echo ${{steps.username.outputs.HEMENDRASHARMA04}}
           
       - name: test api
+        id: myRequest
         uses: fjogeleit/http-request-action@v1.12.0
         with:
           url: "https://reqres.in/api/users/1"
-          method: 'GET'
+         
         
       - name: Show Response
         run: |
           echo ${{ steps.myRequest.outputs.response }}
           echo ${{ steps.myRequest.outputs.headers }}
+          
+      - name: test manual api calling
+        id: api
+        run: |
+          curl -X GET "https://reqres.in/api/users/1"
        
          
 
