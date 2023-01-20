@@ -85,7 +85,7 @@ jobs:
         run: |
           import os
           usr=os.environ['USER']
-          users={"HEMENDRASHARMA04":"Hemendra"}
+          users={"HEMENDRASHARMA04":"U04EZK02Z5H"}
           print(users[usr])
           env_file = os.getenv('GITHUB_ENV')
           with open(env_file, "w") as myfile:
