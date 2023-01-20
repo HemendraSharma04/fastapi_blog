@@ -100,18 +100,9 @@ jobs:
         id: slack
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-#           USER: ${{github.event.commits[0].author.username}}
           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
-          USERNAME: "steps.username.outputs.$USER"
-          TEST_USER: format("steps.username.outputs.{0}",$USER)
-          TEST_SET: format("steps.username.outputs.{0}",$USER)
         run: |
-          
-          
-          echo "action_state=$(eval "${{env.USER}}" )" >> $GITHUB_ENV
-          echo "test_version=$(echo $( ${{env.USER}}))" >> $GITHUB_ENV
-          echo ::set-output name=version::$test_version
-          echo $test_version
+          echo "action_state=${{env.USER}}" >> $GITHUB_ENV
           echo $USER
           echo ${{steps.username.outputs.HEMENDRASHARMA04}}
          
