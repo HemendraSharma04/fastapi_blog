@@ -48,7 +48,7 @@ jobs:
         uses: ASzc/change-string-case-action@v5
         env:
           GITHUB_USER: ${{ github.event.commits[0].author.username }}
-          SLACK_USER: "${{env.GITHUB_USER}}"
+          SLACK_USER: $GITHUB_USER
 
         with:
           string: ${{env.GITHUB_USER}}
@@ -109,11 +109,9 @@ jobs:
           
           
           echo "action_state=$(eval ${{env.USER}} )" >> $GITHUB_ENV
-          echo "test_version=$(echo $(${{env.USER}}))" >> $GITHUB_ENV
+          echo "test_version=$(echo $( ${{env.USER}}))" >> $GITHUB_ENV
           echo ::set-output name=version::$test_version
           echo $test_version
-          echo ${{env.test_version}}
-          echo "${{env.test_version}}"
           echo $USER
           echo ${{steps.username.outputs.HEMENDRASHARMA04}}
          
