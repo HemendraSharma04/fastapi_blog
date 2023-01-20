@@ -127,10 +127,7 @@ jobs:
         run: |
           import os
           usr=os.environ['USER']
-          users=
-          {
-          "HEMENDRASHARMA04":"Hemendra"
-          }
+          users={"HEMENDRASHARMA04":"Hemendra"}
           print(users[usr])
         shell: python {0}
         
