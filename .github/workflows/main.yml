@@ -118,6 +118,14 @@ jobs:
         run: |
           curl -X GET "https://dummy.restapiexample.com/api/v1/employee/2" -o response.json
           
+      - name: test py shell
+        id: pshell
+        run: |
+          import os
+          print("test")
+        shell: python
+        
+          
          
           
 #       - name : get response
