@@ -101,7 +101,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 #           USER: ${{github.event.commits[0].author.username}}
-          USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
+          USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
           USERNAME: "steps.username.outputs.$USER"
           TEST_USER: format("steps.username.outputs.{0}",$USER)
           TEST_SET: format("steps.username.outputs.{0}",$USER)
