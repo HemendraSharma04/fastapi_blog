@@ -122,11 +122,16 @@ jobs:
         id: pshell
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
+#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
+          USER: ${{steps.string.outputs.uppercase}}
         run: |
           import os
           usr=os.environ['USER']
-          print(usr)
+          users=
+          {
+          "HEMENDRASHARMA04":"Hemendra"
+          }
+          print(users[usr])
         shell: python {0}
         
           
