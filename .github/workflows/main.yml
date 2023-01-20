@@ -116,7 +116,8 @@ jobs:
       - name: test manual api calling
         id: api
         run: |
-          curl -X GET "https://dummy.restapiexample.com/api/v1/employee/1"
+          response =$(curl -X GET "https://dummy.restapiexample.com/api/v1/employee/1")
+          echo $response
          
           
       - name : get response
