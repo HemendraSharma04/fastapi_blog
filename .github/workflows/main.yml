@@ -101,16 +101,16 @@ jobs:
       #         with:
       #           python-version: 3.10.8
 
-      - name: merge conflicts in PR
-        #if: failure()
-        id: slack
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
-        run: |
-          echo "action_state=${{env.USER}}" >> $GITHUB_ENV
-          expr echo $USER
-          echo ${{steps.username.outputs.HEMENDRASHARMA04}}
+#       - name: merge conflicts in PR
+#         #if: failure()
+#         id: slack
+#         env:
+#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
+#         run: |
+#           echo "action_state=${{env.USER}}" >> $GITHUB_ENV
+#           expr echo $USER
+#           echo ${{steps.username.outputs.HEMENDRASHARMA04}}
           
       - name: test api
         uses: fjogeleit/http-request-action@v1.12.0
