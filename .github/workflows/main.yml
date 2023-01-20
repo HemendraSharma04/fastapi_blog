@@ -110,11 +110,7 @@ jobs:
           export test_version=$(echo ${{env.TEST_USER}})
           echo ::set-output name=version::$test_version
           echo $test_version
-          echo ${{test_version}}
-          echo $TEST_USER
-          echo $TEST_SET
-          echo ${{env.TEST_USER}}
-          echo ${{env.TEST_SET}}
+         
 
       - name: Use the value
         id: step_two
