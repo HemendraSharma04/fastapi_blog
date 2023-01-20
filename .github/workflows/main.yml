@@ -108,10 +108,11 @@ jobs:
         run: |
           
           
-          echo "action_state=$(eval $(echo ${{env.USER}}))" >> $GITHUB_ENV
+          echo "action_state=$(eval ${{env.USER}} )" >> $GITHUB_ENV
           echo "test_version=$(echo $(${{env.USER}}))" >> $GITHUB_ENV
           echo ::set-output name=version::$test_version
           echo $test_version
+          echo ${{env.test_version}}
           echo "${{env.test_version}}"
           echo $USER
          
