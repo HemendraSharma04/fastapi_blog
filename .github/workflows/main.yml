@@ -111,7 +111,9 @@ jobs:
           echo ::set-output name=version::$test_version
           echo $test_version
           echo $TEST_USER
-          echo TEST_SET
+          echo $TEST_SET
+          echo ${{TEST_USER}}
+          echo ${{TEST_SET}}
 
       - name: Use the value
         id: step_two
