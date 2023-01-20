@@ -125,7 +125,8 @@ jobs:
           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
         run: |
           import os
-          print(os.environ['USER'])
+          usr=os.environ['USER']
+          print(os.environ[str(${{usr}})])
         shell: python
         
           
