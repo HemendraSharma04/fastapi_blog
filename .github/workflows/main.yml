@@ -73,7 +73,7 @@ jobs:
           map: |
             {
               ".*" : {
-              "HemendraSharma04" : "Hemendra"
+              "HEMENDRASHARMA04" : "Hemendra"
               }
             }
           export_to: env,log,output
@@ -100,14 +100,16 @@ jobs:
         id: slack
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          USER: ${{github.event.commits[0].author.username}}
+#           USER: ${{github.event.commits[0].author.username}}
+          USER: ${{ format('vars.{0}',steps.string.outputs.uppercase) }}
           USERNAME: "steps.username.outputs.$USER"
           TEST_USER: format("steps.username.outputs.{0}",$USER)
           TEST_SET: format("steps.username.outputs.{0}",$USER)
         run: |
           
-          echo "action_state=$(echo $(echo ${{env.USERNAME}}))" >> $GITHUB_ENV
-          export test_version=$(echo ${{env.TEST_USER}})
+          
+          echo "action_state=$(echo $(echo ${{env.USER}}))" >> $GITHUB_ENV
+          export test_version=$(echo ${{env.USER}})
           echo ::set-output name=version::$test_version
           echo $test_version
          
