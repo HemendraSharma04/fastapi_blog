@@ -116,13 +116,16 @@ jobs:
       - name: test manual api calling
         id: api
         run: |
-          curl -X GET "https://dummy.restapiexample.com/api/v1/employee/2" -o response.json
+          curl -X GET "https://dummy.restapiexample.com/api/v1/employee/2"
           
       - name: test py shell
         id: pshell
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
         run: |
           import os
-          print("test")
+          print(os.environ['USER'])
         shell: python
         
           
