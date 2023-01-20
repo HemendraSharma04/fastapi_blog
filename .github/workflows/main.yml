@@ -5,38 +5,37 @@ on:
       - master
 
 jobs:
-#   migrations_linter_job:
-#         runs-on: ubuntu-latest
-#         name: Alert for checking breaking migrations
-#         steps:
-#             - uses: actions/checkout@v3
-#               with:
-#                   fetch-depth: 0
+  #   migrations_linter_job:
+  #         runs-on: ubuntu-latest
+  #         name: Alert for checking breaking migrations
+  #         steps:
+  #             - uses: actions/checkout@v3
+  #               with:
+  #                   fetch-depth: 0
 
-#             - name: Get changed files
-#               id: changed-files
-#               uses: tj-actions/changed-files@v31.0.0
+  #             - name: Get changed files
+  #               id: changed-files
+  #               uses: tj-actions/changed-files@v31.0.0
 
-#             - name: setup python
-#               uses: actions/setup-python@v4.2.0
-#               with:
-#                   python-version: 3.10.8
+  #             - name: setup python
+  #               uses: actions/setup-python@v4.2.0
+  #               with:
+  #                   python-version: 3.10.8
 
-#             - name: Run migrations linter
-#               run: |
-#                   python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+  #             - name: Run migrations linter
+  #               run: |
+  #                   python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
   sync-branches:
     #needs: migrations_linter_job
     runs-on: ubuntu-latest
     name: Syncing branches
     steps:
-    
       - name: setup python
         uses: actions/setup-python@v4.2.0
         with:
           python-version: 3.10.8
-          
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -76,7 +75,7 @@ jobs:
               }
             }
           export_to: env,log,output
-          
+
       - name: test py shell
         id: pshell
         env:
@@ -93,7 +92,7 @@ jobs:
             temp="SLACK_USER"+"="+users[usr]
             myfile.write(temp)
         shell: python {0}
-        
+
       - name: get env variable
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
@@ -105,14 +104,12 @@ jobs:
         id: "automerge"
         uses: mtanzi/action-automerge@v1
         with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
-            merge_method: "squash"
-            commit_message: "Merge master into develop"
-            source: "master"
-            target: "develop"
-
-
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
+          merge_method: "squash"
+          commit_message: "Merge master into develop"
+          source: "master"
+          target: "develop"
 
       - name: merge conflicts in PR
         if: failure()
@@ -120,26 +117,8 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
-        
+
         uses: slackapi/slack-github-action@v1.23.0
         with:
-          channel-id: "D04KSLG4FFA"
+          channel-id: "CG64UFLLW"
           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
-
-          
-     
-          
-
-          
-        
-        
-        
-          
-         
-          
-
-       
-         
-
-
-
