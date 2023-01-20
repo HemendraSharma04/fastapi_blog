@@ -116,7 +116,7 @@ jobs:
       - name: test manual api calling
         id: api
         run: |
-          curl -X GET "https://reqres.in/api/users/1" -o test.json
+          curl -X GET "https://dummy.restapiexample.com/api/v1/employee/1"
          
           
       - name : get response
