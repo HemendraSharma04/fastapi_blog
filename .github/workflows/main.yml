@@ -67,7 +67,7 @@ jobs:
           import os
           import json
           usr=os.environ['USER']
-          with open('users.json', 'r') as openfile:
+          with open('users.json', 'wr') as openfile:
             users = json.load(openfile)
           print(users[usr])
           env_file = os.getenv('GITHUB_ENV')
