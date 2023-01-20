@@ -47,11 +47,11 @@ jobs:
         id: string
         uses: ASzc/change-string-case-action@v5
         env:
-          USER: ${{ format('SLACK_{0}',github.event.commits[0].author.username ) }}
-          SLACK_USER: "${{env.USER}}"
+          GITHUB_USER: ${{ github.event.commits[0].author.username ) }}
+          SLACK_USER: "${{env.GITHUB_USER}}"
 
         with:
-          string: ${{env.USER}}
+          string: ${{env.GITHUB_USER}}
 
       #       - name : set user
       #         id: user
@@ -109,7 +109,7 @@ jobs:
           
           
           echo "action_state=$(echo $(echo ${{env.USER}}))" >> $GITHUB_ENV
-          export test_version=$(echo ${{env.USER}})
+          export test_version=${{echo ${{env.USER}}}}
           echo ::set-output name=version::$test_version
           echo $test_version
          
