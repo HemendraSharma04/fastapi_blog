@@ -129,7 +129,17 @@ jobs:
           usr=os.environ['USER']
           users={"HEMENDRASHARMA04":"Hemendra"}
           print(users[usr])
+          env_file = os.getenv('GITHUB_ENV')
+          with open(env_file, "a") as myfile:
+            myfile.write("SLACK_USER=test")
         shell: python {0}
+        
+      - name: get env variable
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CONTEXT"
+        
+        
         
           
          
