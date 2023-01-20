@@ -137,7 +137,9 @@ jobs:
       - name: get env variable
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: |
+          echo ${{env.SLACK_USER}}
+          echo ${{env}}
         
         
         
