@@ -48,40 +48,21 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
 
-      - name: test uppercase
-        id: string
-        uses: ASzc/change-string-case-action@v5
-        env:
-          GITHUB_USER: ${{ github.event.commits[0].author.username }}
-          SLACK_USER: $GITHUB_USER
-
-        with:
-          string: ${{env.GITHUB_USER}}
+      
 
       - name: GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - name: variable-mapper
-        id: username
-        uses: kanga333/variable-mapper@v0.3.0
-        with:
-          key: "${{github.base_ref}}"
-          map: |
-            {
-              ".*" : {
-              "HEMENDRASHARMA04" : "Hemendra"
-              }
-            }
-          export_to: env,log,output
+     
 
       - name: test py shell
         id: pshell
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-          USER: ${{steps.string.outputs.uppercase}}
+          USER: ${{github.event.commits[0].author.username}}
         run: |
           import os
           import json
