@@ -116,13 +116,13 @@ jobs:
       - name: test manual api calling
         id: api
         run: |
-          response =$(curl -X GET "https://dummy.restapiexample.com/api/v1/employee/1")
-          echo $response
+          curl -X GET "https://dummy.restapiexample.com/api/v1/employee/1") > response.json
+          
          
           
-      - name : get response
-        run: |
-          echo ${{steps.id.outputs.response}}
+#       - name : get response
+#         run: |
+#           echo ${{steps.id.outputs.response}}
        
          
 
