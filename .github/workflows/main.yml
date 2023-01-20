@@ -113,6 +113,7 @@ jobs:
           echo ::set-output name=version::$test_version
           echo $test_version
           echo "${{env.test_version}}"
+          echo $USER
          
 
       - name: Use the value
