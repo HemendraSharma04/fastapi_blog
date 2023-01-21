@@ -48,11 +48,17 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
 
-      - name: tesh gh cli
+      - name: get develop branch commits 
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          gh api /repos/HemendraSharma04/fastapi_blog/pulls/46/commits
+          resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
+          echo 'RESP='$resp >> $GITHUB_ENV
+          
+      - name: Get develop branch user
+        run: |
+          echo ${{env.RESP}}
+        
 
       - name: GitHub context
         env:
