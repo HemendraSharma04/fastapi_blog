@@ -52,7 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          resp = "$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
+          resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
           echo 'RESP='$resp >> $GITHUB_ENV
           
       - name: Get develop branch user
