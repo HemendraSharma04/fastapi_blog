@@ -48,7 +48,11 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
 
-      
+      - name: tesh gh cli
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          gh api /repos/HemendraSharma04/fastapi_blog/pulls/46/commits
 
       - name: GitHub context
         env:
