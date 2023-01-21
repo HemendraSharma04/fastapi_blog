@@ -63,7 +63,11 @@ jobs:
       - name: GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+        run: |
+          resp=os.environ['RESP']
+          print(type(resp))
+        
+        shell: python {0}
 
      
 
