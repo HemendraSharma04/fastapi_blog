@@ -65,8 +65,11 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           import os
+          import json
           resp=os.environ['RESP']
-          print(type(resp))
+          json_object = json.loads(resp)
+          print(type(json_object))
+          print(json_object)
         
         shell: python {0}
 
