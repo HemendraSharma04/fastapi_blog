@@ -53,7 +53,9 @@ jobs:
           import os
           import json
           resp=os.environ['LOGS']
-          print(resp)
+          resp=resp.split("|")
+          result = filter(lambda x: x != "noreply@github.com", resp)
+          print(result)
 
         shell: python {0}
 
