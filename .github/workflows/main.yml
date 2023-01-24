@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-      - develop
+      
 
 jobs:
   #   migrations_linter_job:
@@ -40,7 +40,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          etch-depth: 0
+#           fetch-depth: 0
+          ref: develop
         
       - name: git logs
         run: |
@@ -68,9 +69,6 @@ jobs:
           echo ${{env.RESP}}
       
      
-          
-        
-
       - name: GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
