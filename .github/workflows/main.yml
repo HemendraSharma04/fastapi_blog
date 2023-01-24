@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - develop
 
 jobs:
   #   migrations_linter_job:
@@ -38,10 +39,13 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          etch-depth: 0
         
       - name: git logs
         run: |
-          git log
+          git branch
+          
 
       - name: Opening pull request
         id: pull
