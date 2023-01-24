@@ -124,11 +124,11 @@ jobs:
             print(usr)
             print(develop_users[0])
             print(users[usr])
-            # master_user="MASTER_USER"+"="+users[usr]
-            # develop_user="DEVELOP_USER"+"="+users[develop_users[0]]
-            # myfile.write(master_user)
-            # myfile.write('\n')
-            # myfile.write(develop_user)
+            master_user="MASTER_USER"+"="+users[usr]
+            develop_user="DEVELOP_USER"+"="+users[develop_users[0]]
+            myfile.write(master_user)
+            myfile.write('\n')
+            myfile.write(develop_user)
         shell: python {0}
 
       - name: get env variable
