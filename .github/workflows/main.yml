@@ -65,9 +65,13 @@ jobs:
           echo 'RESP='$resp >> $GITHUB_ENV
 
       - name: Get develop branch user
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
-          echo ${{env.RESP}}
-          echo ${{env.LOGS}}
+          #echo ${{env.RESP}}
+          #echo ${{env.LOGS}}
+          echo {{env.GITHUB_CONTETEXT}}
+          
 
       - name: GitHub context
         env:
