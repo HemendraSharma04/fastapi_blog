@@ -60,11 +60,11 @@ jobs:
 
         shell: python {0}
 
-      - name: Get Context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
+      # - name: Get Context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJSON(github) }}
+      #   run: |
+      #     echo "$GITHUB_CONTEXT"
 
       - name: Opening pull request
         id: pull
@@ -75,27 +75,27 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
 
-      - name: get develop branch commits
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
-          echo 'RESP='$resp >> $GITHUB_ENV
+      # - name: get develop branch commits
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      #   run: |
+      #     resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
+      #     echo 'RESP='$resp >> $GITHUB_ENV
 
-      - name: GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: |
-          import os
-          import json
-          resp=os.environ['RESP']
-          json_object = json.loads(resp)
-          print(type(json_object))
-          print(json_object)
+      # - name: GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJSON(github) }}
+      #   run: |
+      #     import os
+      #     import json
+      #     resp=os.environ['RESP']
+      #     json_object = json.loads(resp)
+      #     print(type(json_object))
+      #     print(json_object)
 
-        shell: python {0}
+      #   shell: python {0}
 
-      - name: test py shell
+      - name: set users for slack message
         id: pshell
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -105,21 +105,29 @@ jobs:
           import os
           import json
           usr=os.environ['USER']
+          resp=os.environ['LOGS']
+          resp=resp.split("|")
+          result = filter(lambda x: x != " noreply@github.com", resp)
+          develop_users=list(result)
+
           with open('users.json', 'r') as openfile:
             users = json.load(openfile)
-          print(users[usr])
+
           env_file = os.getenv('GITHUB_ENV')
           with open(env_file, "w") as myfile:
-            temp="SLACK_USER"+"="+users[usr]
-            myfile.write(temp)
+            master_user="MASTER_USER"+"="+users[usr]
+            develop_user="DEVELOP_USER"+"="+users[develop_user[0]]
+            myfile.write(master_user)
+            myfile.write('\n')
+            myfile.write(develop_user)
         shell: python {0}
 
       - name: get env variable
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
-          echo ${{env.SLACK_USER}}
-          ls
+          echo ${{env.MASTER_USER}}
+          echo ${{env.DEVELOP_USER}}
           pwd
 
       - name: Action-Automerge
