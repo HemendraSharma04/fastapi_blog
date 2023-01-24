@@ -44,11 +44,11 @@ jobs:
 
       - name: git logs
         run: |
-          log="$(git log --pretty=format:"%cn" -n 10)"
+          log="$(git log --pretty=format:"%cn" -n 20)"
           echo 'LOGS='$log >> $GITHUB_ENV
-      
+
       - name: get logs
-      
+
         run: |
           import os
           import json
@@ -56,16 +56,12 @@ jobs:
           print(resp)
 
         shell: python {0}
-        
-          
-          
+
       - name: Get Context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
-          
-          
 
       - name: Opening pull request
         id: pull
@@ -82,9 +78,6 @@ jobs:
         run: |
           resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
           echo 'RESP='$resp >> $GITHUB_ENV
-
-     
-          
 
       - name: GitHub context
         env:
