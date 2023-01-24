@@ -46,6 +46,7 @@ jobs:
       - name: git logs
         run: |
           git branch
+          git log
           
 
       - name: Opening pull request
