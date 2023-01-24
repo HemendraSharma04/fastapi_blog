@@ -47,6 +47,12 @@ jobs:
           git branch
           git log -n 10
           
+      - name: Get Context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+          
 
       - name: Opening pull request
         id: pull
@@ -64,13 +70,7 @@ jobs:
           resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
           echo 'RESP='$resp >> $GITHUB_ENV
 
-      - name: Get develop branch user
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: |
-          #echo ${{env.RESP}}
-          #echo ${{env.LOGS}}
-          echo {{env.GITHUB_CONTEXT}}
+     
           
 
       - name: GitHub context
