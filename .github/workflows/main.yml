@@ -59,9 +59,7 @@ jobs:
         run: |
           echo ${{env.RESP}}
       
-      - name: Test Git Logs
-        run: |
-          git log develop
+    
         
 
       - name: GitHub context
