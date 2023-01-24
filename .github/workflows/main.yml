@@ -53,7 +53,7 @@ jobs:
           import os
           import json
           resp=os.environ['LOGS']
-          print(type(resp))
+          print(resp)
 
         shell: python {0}
         
