@@ -41,7 +41,7 @@ jobs:
         
       - name: git logs
         run: |
-          git log
+          git log develop..master
 
       - name: Opening pull request
         id: pull
