@@ -59,7 +59,10 @@ jobs:
         run: |
           echo ${{env.RESP}}
       
-    
+      - name: git logs
+        run: |
+          git log
+          
         
 
       - name: GitHub context
@@ -102,6 +105,7 @@ jobs:
         run: |
           echo ${{env.SLACK_USER}}
           ls
+          pwd
 
       - name: Action-Automerge
         if: Success()
