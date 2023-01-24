@@ -39,10 +39,12 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          etch-depth: 0
         
       - name: git logs
         run: |
-          git log develop..master
+          git log develop
 
       - name: Opening pull request
         id: pull
