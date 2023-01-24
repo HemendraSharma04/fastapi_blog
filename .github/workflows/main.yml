@@ -54,9 +54,6 @@ jobs:
           import json
           resp=os.environ['LOGS']
           print(type(resp))
-          json_object = json.loads(resp)
-          print(type(json_object))
-          print(json_object)
 
         shell: python {0}
         
