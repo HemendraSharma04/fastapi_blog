@@ -45,7 +45,18 @@ jobs:
       - name: git logs
         run: |
           log="$(git log -n 10)"
-          echo 'LOG='$log >> $GITHUB_ENV
+          echo 'LOGS='$log >> $GITHUB_ENV
+      
+      - name: get logs
+      
+        run: |
+          import os
+          import json
+          resp=os.environ['LOGS']
+          print(type(resp))
+
+        shell: python {0}
+        
           
           
       - name: Get Context
@@ -53,7 +64,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
-          echo "${{env.LOG}}"
+          
           
 
       - name: Opening pull request
