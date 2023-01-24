@@ -38,6 +38,10 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+        
+      - name: git logs
+        run: |
+          git log
 
       - name: Opening pull request
         id: pull
@@ -59,9 +63,7 @@ jobs:
         run: |
           echo ${{env.RESP}}
       
-      - name: git logs
-        run: |
-          git log
+     
           
         
 
