@@ -44,7 +44,7 @@ jobs:
 
       - name: git logs
         run: |
-          log="$(git log --pretty=format:"%cn" -n 10)"
+          log="$(git log --pretty=format:"%cn|" -n 10)"
           echo 'LOGS='$log >> $GITHUB_ENV
       
       - name: get logs
