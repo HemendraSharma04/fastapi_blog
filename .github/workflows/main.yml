@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      
 
 jobs:
   #   migrations_linter_job:
@@ -40,14 +39,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-#           fetch-depth: 0
+          #           fetch-depth: 0
           ref: develop
-        
+
       - name: git logs
         run: |
           git branch
-          git log -a
-          
+          log=$(git log -n 10)
+          echo "LOGS=$log" >> $GITHUB_ENV
 
       - name: Opening pull request
         id: pull
@@ -58,18 +57,18 @@ jobs:
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
 
-      - name: get develop branch commits 
+      - name: get develop branch commits
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
           echo 'RESP='$resp >> $GITHUB_ENV
-          
+
       - name: Get develop branch user
         run: |
           echo ${{env.RESP}}
-      
-     
+          echo ${{env.LOGS}}
+
       - name: GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
@@ -80,10 +79,8 @@ jobs:
           json_object = json.loads(resp)
           print(type(json_object))
           print(json_object)
-        
-        shell: python {0}
 
-     
+        shell: python {0}
 
       - name: test py shell
         id: pshell
@@ -123,7 +120,6 @@ jobs:
           commit_message: "Merge master into develop"
           source: "master"
           target: "develop"
-
 #       - name: merge conflicts in PR
 #         if: failure()
 #         id: slack
