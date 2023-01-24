@@ -44,7 +44,7 @@ jobs:
 
       - name: git logs
         run: |
-          log="$(git log --pretty=format:"%cn" -n 20)"
+          log="$(git log --pretty=format:"%ce|" -n 20)"
           echo 'LOGS='$log >> $GITHUB_ENV
 
       - name: get logs
@@ -97,7 +97,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-          USER: ${{github.event.commits[0].author.username}}
+          USER: ${{github.event.commits[0].author.email}}
         run: |
           import os
           import json
