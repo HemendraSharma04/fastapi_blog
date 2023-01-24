@@ -54,7 +54,7 @@ jobs:
           import json
           resp=os.environ['LOGS']
           resp=resp.split("|")
-          result = filter(lambda x: x != "noreply@github.com", resp)
+          result = filter(lambda x: x != " noreply@github.com", resp)
           result=list(result)
           print(result)
 
