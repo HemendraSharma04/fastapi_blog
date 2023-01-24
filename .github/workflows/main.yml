@@ -128,7 +128,7 @@ jobs:
         run: |
           echo ${{env.MASTER_USER}}
           echo ${{env.DEVELOP_USER}}
-          pwd
+          
 
       - name: Action-Automerge
         if: Success()
