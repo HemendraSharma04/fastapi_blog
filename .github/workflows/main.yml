@@ -58,6 +58,10 @@ jobs:
       - name: Get develop branch user
         run: |
           echo ${{env.RESP}}
+      
+      - name: Test Git Logs
+        run: |
+          git log develop
         
 
       - name: GitHub context
@@ -99,6 +103,7 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo ${{env.SLACK_USER}}
+          ls
 
       - name: Action-Automerge
         if: Success()
