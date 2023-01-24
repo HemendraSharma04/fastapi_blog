@@ -44,14 +44,16 @@ jobs:
 
       - name: git logs
         run: |
-          git branch
-          git log -n 10
+          log="$(git log -n 10)"
+          echo 'LOG='$log >> $GITHUB_ENV
+          
           
       - name: Get Context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+          echo "${{env.LOG}}"
           
 
       - name: Opening pull request
