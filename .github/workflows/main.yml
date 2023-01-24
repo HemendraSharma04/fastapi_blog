@@ -45,8 +45,8 @@ jobs:
       - name: git logs
         run: |
           git branch
-          log=$(git log -n 10)
-          echo "LOGS=$log" >> $GITHUB_ENV
+          git log -n 10
+          
 
       - name: Opening pull request
         id: pull
