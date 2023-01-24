@@ -116,12 +116,12 @@ jobs:
           env_file = os.getenv('GITHUB_ENV')
           with open(env_file, "w") as myfile:
             print(usr)
-            print(develop_user[0])
+            print(develop_users[0])
             master_user="MASTER_USER"+"="+users[usr]
-            # develop_user="DEVELOP_USER"+"="+users[develop_user[0]]
+            develop_user="DEVELOP_USER"+"="+users[develop_users[0]]
             myfile.write(master_user)
             myfile.write('\n')
-            # myfile.write(develop_user)
+            myfile.write(develop_user)
         shell: python {0}
 
       - name: get env variable
