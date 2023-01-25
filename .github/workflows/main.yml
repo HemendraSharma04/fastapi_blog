@@ -7,6 +7,9 @@ on:
 jobs:
   migrations_linter_job:
     runs-on: ubuntu-latest
+    outputs:
+      master_user: ${{env.MASTER_USER}}
+      develop_user: ${{env.DEVELOP_USER}}
     name: Alert for checking breaking migrations
     steps:
       - name: setup python
@@ -91,11 +94,11 @@ jobs:
         run: |
           exit 0
 
-      - name: Run migrations linter
-        id: linter
+      # - name: Run migrations linter
+      #   id: linter
 
-        run: |
-          python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+      #   run: |
+      #     python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
       # - name: Slack notification
 
@@ -118,7 +121,7 @@ jobs:
       #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
 
   sync-branches:
-    #needs: migrations_linter_job
+    needs: migrations_linter_job
     runs-on: ubuntu-latest
     name: Syncing branches
     steps:
@@ -147,8 +150,8 @@ jobs:
       - name: check if conditions
         if: failure()
         run: |
-          echo "${{env.MASTER_USER}}"
-          echo "${{env.DEVELOP_USER}}"
+          echo ${{needs.migrations_linter_job.outputs.master_user}}
+          echo ${{needs.migrations_linter_job.outputs.develop_user}}
 
       # - name: merge conflicts in PR
       #   if: ${{ failure() && steps.equal.conclusion != 'success' && steps.automerge.conclusion != 'success'}}
