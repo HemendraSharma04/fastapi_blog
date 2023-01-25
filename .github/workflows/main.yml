@@ -143,6 +143,11 @@ jobs:
         run: |
           echo "equal"
 
+      - name: test not equal
+        if: ${{env.MASTER_USER}} != ${{env.DEVELOP_USER}}
+        run: |
+          echo "not equal"
+
       - name: Action-Automerge
         if: Success()
         id: "automerge"
@@ -155,24 +160,29 @@ jobs:
           source: "master"
           target: "develop"
 
-      - name: merge conflicts in PR
-        if: failure()
+      - name: check if conditions
+        if: failure() && ( ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}} )
+        run: |
+          echo "failure"
 
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      # - name: merge conflicts in PR
+      #   if: failure()
 
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "GitHub merge conflict in branch sync \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      - name: merge conflicts in PR
-        if: failure() && (${{env.MASTER_USER}} == ${{env.DEVELOP_USER}})
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "GitHub merge conflict in branch syncing \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      # - name: merge conflicts in PR
+      #   if: failure()
 
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
