@@ -9,36 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Alert for checking breaking migrations
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v31.0.0
-
-      - name: setup python
-        uses: actions/setup-python@v4.2.0
-        with:
-          python-version: 3.10.8
-
-      - name: Run migrations linter
-        run: |
-          python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
-
-      - name: Slack notification
-
-        if: failure()
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Cannot sync branches due to linting error \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
-
-  sync-branches:
-    #needs: migrations_linter_job
-    runs-on: ubuntu-latest
-    name: Syncing branches
-    steps:
       - name: setup python
         uses: actions/setup-python@v4.2.0
         with:
@@ -55,25 +25,6 @@ jobs:
           log="$(git log --pretty=format:"%ce|" -n 100)"
           echo 'LOGS='$log >> $GITHUB_ENV
 
-      - name: get logs
-
-        run: |
-          import os
-          import json
-          resp=os.environ['LOGS']
-          resp=resp.split("|")
-          result = filter(lambda x: x != " noreply@github.com", resp)
-          result=list(result)
-          print(result)
-
-        shell: python {0}
-
-      # - name: Get Context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJSON(github) }}
-      #   run: |
-      #     echo "$GITHUB_CONTEXT"
-
       - name: Opening pull request
         id: pull
         uses: tretuna/sync-branches@1.4.0
@@ -82,26 +33,6 @@ jobs:
           CONTENT_COMPARISON: true
           FROM_BRANCH: "master"
           TO_BRANCH: "develop"
-
-      # - name: get develop branch commits
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      #   run: |
-      #     resp="$(gh api /repos/HemendraSharma04/fastapi_blog/branches/develop)"
-      #     echo 'RESP='$resp >> $GITHUB_ENV
-
-      # - name: GitHub context
-      #   env:
-      #     GITHUB_CONTEXT: ${{ toJSON(github) }}
-      #   run: |
-      #     import os
-      #     import json
-      #     resp=os.environ['RESP']
-      #     json_object = json.loads(resp)
-      #     print(type(json_object))
-      #     print(json_object)
-
-      #   shell: python {0}
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -150,15 +81,43 @@ jobs:
           echo ${{env.DEVELOP_USER}}
           echo ${{env.EQUAL}}
 
-      - name: test equal
-        if: ${{ env.EQUAL }}
-        run: |
-          echo "equal"
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31.0.0
 
-      - name: test not equal
-        if: ${{ !env.EQUAL }}
+      - name: Run migrations linter
         run: |
-          echo "not equal"
+          python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+
+      # - name: Slack notification
+
+      #   if: failure() && {{ !env.EQUAL }}
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+
+      # - name: Slack notification
+
+      #   if: failure() && {{ env.EQUAL }}
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
+
+  sync-branches:
+    #needs: migrations_linter_job
+    runs-on: ubuntu-latest
+    name: Syncing branches
+    steps:
+      - name: setup python
+        uses: actions/setup-python@v4.2.0
+        with:
+          python-version: 3.10.8
 
       - name: Action-Automerge
         if: Success()
@@ -172,13 +131,8 @@ jobs:
           source: "master"
           target: "develop"
 
-      - name: check if conditions
-        if: failure()
-        run: |
-          echo "failure"
-
       # - name: merge conflicts in PR
-      #   if: failure()
+      #   if: failure() && ${{ ! env.EQUAL }}
 
       #   env:
       #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -186,10 +140,10 @@ jobs:
       #   uses: slackapi/slack-github-action@v1.23.0
       #   with:
       #     channel-id: "CG64UFLLW"
-      #     slack-message: "GitHub merge conflict in branch syncing \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+      #     slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
       # - name: merge conflicts in PR
-      #   if: failure()
+      #   if: failure() && {{ env.EQUAL }}
 
       #   env:
       #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -197,4 +151,4 @@ jobs:
       #   uses: slackapi/slack-github-action@v1.23.0
       #   with:
       #     channel-id: "CG64UFLLW"
-      #     slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
+      #     slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job: ${{ job.status }}\nCommit: ${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nuser : <@${{env.SLACK_USER}}>\n"
