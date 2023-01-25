@@ -30,7 +30,7 @@ jobs:
 
         if: failure()
         uses: slackapi/slack-github-action@v1.23.0
-        with: 
+        with:
           channel-id: "CG64UFLLW"
           slack-message: "Cannot sync branches due to linting error \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
@@ -137,7 +137,7 @@ jobs:
             myfile.write(master_user)
             myfile.write('\n')
             myfile.write(develop_user)
-            if(master_user==develop_user):
+            if(users[usr]==users[develop_users[0]]):
               myfile.write('\n')
               myfile.write("EQUAL=true")
         shell: python {0}
