@@ -91,7 +91,7 @@ jobs:
 
       - name: Slack notification
 
-        if: failure() && {{ !env.EQUAL }}
+        if: failure() && {{ ! env.EQUAL }}
         uses: slackapi/slack-github-action@v1.23.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
