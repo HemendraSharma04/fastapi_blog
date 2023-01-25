@@ -97,25 +97,25 @@ jobs:
         run: |
           python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
-      - name: Slack notification
+      # - name: Slack notification
 
-        if: ${{ failure() && steps.equal.conclusion != 'success' }}
-        uses: slackapi/slack-github-action@v1.23.0
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+      #   if: ${{ failure() && steps.equal.conclusion != 'success' }}
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
-      - name: Slack notification cc
+      # - name: Slack notification cc
 
-        if: ${{ failure() && steps.equal.conclusion == 'success'  && steps.linter.conclusion != 'success' }}
-        uses: slackapi/slack-github-action@v1.23.0
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
+      #   if: ${{ failure() && steps.equal.conclusion == 'success'  && steps.linter.conclusion != 'success' }}
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
 
   sync-branches:
     #needs: migrations_linter_job
@@ -150,7 +150,7 @@ jobs:
           echo "failure"
 
       - name: merge conflicts in PR
-        if: ${{ !env.EQUAL && steps.automerge.conclusion != 'success'}}
+        if: ${{ failure() && steps.equal.conclusion != 'success' && steps.automerge.conclusion != 'success'}}
 
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -161,7 +161,7 @@ jobs:
           slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
       - name: merge conflicts in PR
-        if: ${{env.EQUAL && steps.automerge.conclusion != 'success' }}
+        if: ${{ failure() && steps.equal.conclusion == 'success' && steps.automerge.conclusion != 'success' }}
 
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
