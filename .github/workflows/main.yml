@@ -44,7 +44,7 @@ jobs:
 
       - name: git logs
         run: |
-          log="$(git log --pretty=format:"%ce|" -n 20)"
+          log="$(git log --pretty=format:"%ce|" -n 100)"
           echo 'LOGS='$log >> $GITHUB_ENV
 
       - name: get logs
@@ -149,14 +149,25 @@ jobs:
           commit_message: "Merge master into develop"
           source: "master"
           target: "develop"
-#       - name: merge conflicts in PR
-#         if: failure()
-#         id: slack
-#         env:
-#           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-#           USER: ${{ format('steps.username.outputs.{0}',steps.string.outputs.uppercase) }}
 
-#         uses: slackapi/slack-github-action@v1.23.0
-#         with:
-#           channel-id: "CG64UFLLW"
-#           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
+      - name: merge conflicts in PR
+        if: failure() && ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}}
+        id: slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
+
+      - name: merge conflicts in PR
+        if: failure() && ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}}
+        id: slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "GitHub merge conflict in branch sync \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
