@@ -152,7 +152,7 @@ jobs:
 
       - name: merge conflicts in PR
         if: failure() && ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}}
-        id: slack
+
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
@@ -163,7 +163,7 @@ jobs:
 
       - name: merge conflicts in PR
         if: failure() && ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}}
-        id: slack
+
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
