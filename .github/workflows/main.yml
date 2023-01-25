@@ -102,7 +102,7 @@ jobs:
 
       - name: Slack notification
 
-        if: ${{ !env.EQUAL && steps.linter.outcome != 'success' }}
+        if: ${{ !env.EQUAL && steps.linter.conclusion != 'success' }}
         uses: slackapi/slack-github-action@v1.23.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -112,7 +112,7 @@ jobs:
 
       - name: Slack notification cc
 
-        if: ${{ env.EQUAL && steps.linter.outcome != 'success' }}
+        if: ${{ env.EQUAL && steps.linter.conclusion != 'success' }}
         uses: slackapi/slack-github-action@v1.23.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -153,7 +153,7 @@ jobs:
           echo "failure"
 
       - name: merge conflicts in PR
-        if: ${{ ! env.EQUAL && steps.automerge.outcome != 'success'}}
+        if: ${{ !env.EQUAL && steps.automerge.conclusion != 'success'}}
 
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -164,7 +164,7 @@ jobs:
           slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
       - name: merge conflicts in PR
-        if: ${{env.EQUAL && steps.automerge.outcome != 'success' }}
+        if: ${{env.EQUAL && steps.automerge.conclusion != 'success' }}
 
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
