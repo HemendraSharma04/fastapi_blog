@@ -93,7 +93,7 @@ jobs:
 
       - name: Run migrations linter
         id: linter
-        continue-on-error: true
+
         run: |
           python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
