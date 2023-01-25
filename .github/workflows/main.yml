@@ -140,9 +140,10 @@ jobs:
         run: |
           echo ${{env.MASTER_USER}}
           echo ${{env.DEVELOP_USER}}
+          echo ${{env.EQUAL}}
 
       - name: test equal
-        if: ${{env.EQUAL}} == "true"
+        if: ${{env.EQUAL}}
         run: |
           echo "equal"
 
