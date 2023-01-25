@@ -162,7 +162,7 @@ jobs:
           slack-message: "GitHub merge conflict test \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.SLACK_USER}}>\n"
 
       - name: merge conflicts in PR
-        if: failure() && ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}}
+        if: failure() && ${{env.MASTER_USER}} != ${{env.DEVELOP_USER}}
 
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
