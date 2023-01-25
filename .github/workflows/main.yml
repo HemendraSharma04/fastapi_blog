@@ -142,7 +142,7 @@ jobs:
           target: "develop"
 
       - name: check if conditions
-        if: ${{ env.EQUAL }} && failure()
+        if: ${{ env.EQUAL && failure() }}
         run: |
           echo "failure"
 
