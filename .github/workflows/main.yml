@@ -91,7 +91,7 @@ jobs:
           python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: test
-        if: steps.linter.outcome != 'success'
+        if: steps.linter.outcome != 'success' && failure()
         run: |
           echo "failure"
 
