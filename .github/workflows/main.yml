@@ -89,25 +89,25 @@ jobs:
         run: |
           python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
-      # - name: Slack notification
+      - name: Slack notification
 
-      #   if: failure() && {{ !env.EQUAL }}
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      #   with:
-      #     channel-id: "CG64UFLLW"
-      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+        if: failure() && {{ !env.EQUAL }}
+        uses: slackapi/slack-github-action@v1.23.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
-      # - name: Slack notification
+      - name: Slack notification
 
-      #   if: failure() && {{ env.EQUAL }}
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      #   with:
-      #     channel-id: "CG64UFLLW"
-      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
+        if: failure() && {{ env.EQUAL }}
+        uses: slackapi/slack-github-action@v1.23.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
 
   sync-branches:
     #needs: migrations_linter_job
@@ -131,24 +131,24 @@ jobs:
           source: "master"
           target: "develop"
 
-      # - name: merge conflicts in PR
-      #   if: failure() && ${{ ! env.EQUAL }}
+      - name: merge conflicts in PR
+        if: failure() && ${{ ! env.EQUAL }}
 
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   with:
-      #     channel-id: "CG64UFLLW"
-      #     slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
-      # - name: merge conflicts in PR
-      #   if: failure() && {{ env.EQUAL }}
+      - name: merge conflicts in PR
+        if: failure() && {{ env.EQUAL }}
 
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   with:
-      #     channel-id: "CG64UFLLW"
-      #     slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job: ${{ job.status }}\nCommit: ${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nuser : <@${{env.SLACK_USER}}>\n"
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job: ${{ job.status }}\nCommit: ${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nuser : <@${{env.SLACK_USER}}>\n"
