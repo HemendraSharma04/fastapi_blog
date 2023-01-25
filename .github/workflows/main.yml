@@ -91,12 +91,12 @@ jobs:
           python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: test
-        if: steps.linter.outcome != 'success' && ${{ env.EQUAL }}
+        if: steps.linter.outcome != 'success'
         run: |
           echo "failure"
 
       - name: test2
-        if: steps.linter.outcome != 'success' && ${{ !env.EQUAL }}
+        if: steps.linter.outcome != 'success'
         run: |
           echo "failure2"
 
