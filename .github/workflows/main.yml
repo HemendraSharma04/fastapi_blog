@@ -145,28 +145,29 @@ jobs:
           target: "develop"
 
       - name: check if conditions
-        if: ${{ steps.automerge.outcome != 'success' }}
+        if: failure()
         run: |
-          echo "failure"
+          echo "${{env.MASTER_USER}}"
+          echo "${{env.DEVELOP_USER}}"
 
-      - name: merge conflicts in PR
-        if: ${{ failure() && steps.equal.conclusion != 'success' && steps.automerge.conclusion != 'success'}}
+      # - name: merge conflicts in PR
+      #   if: ${{ failure() && steps.equal.conclusion != 'success' && steps.automerge.conclusion != 'success'}}
 
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\nCommit:${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\ncc: <@${{env.DEVELOP_USER}}>  "
 
-      - name: merge conflicts in PR
-        if: ${{ failure() && steps.equal.conclusion == 'success' && steps.automerge.conclusion != 'success' }}
+      # - name: merge conflicts in PR
+      #   if: ${{ failure() && steps.equal.conclusion == 'success' && steps.automerge.conclusion != 'success' }}
 
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job: ${{ job.status }}\nCommit: ${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nuser : <@${{env.SLACK_USER}}>\n"
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job: ${{ job.status }}\nCommit: ${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nuser : <@${{env.MASTER_USER}}>\n"
