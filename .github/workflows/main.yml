@@ -10,6 +10,7 @@ jobs:
     outputs:
       master_user: ${{env.MASTER_USER}}
       develop_user: ${{env.DEVELOP_USER}}
+      check_equal: ${{env.EQUAL}}
     name: Alert for checking breaking migrations
     steps:
       - name: setup python
@@ -134,6 +135,12 @@ jobs:
         uses: actions/setup-python@v4.2.0
         with:
           python-version: 3.10.8
+
+      - name: check same user condition
+        id: equal
+        if: ${{ needs.migrations_linter_job.outputs.check_equal }}
+        run: |
+          exit 0
 
       - name: Action-Automerge
         if: Success()
