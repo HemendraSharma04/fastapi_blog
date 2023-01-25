@@ -151,12 +151,12 @@ jobs:
           echo ${{env.EQUAL}}
 
       - name: test equal
-        if: ${{env.EQUAL}}
+        if: ${{ env.EQUAL }}
         run: |
           echo "equal"
 
       - name: test not equal
-        if: ${{env.EQUAL}} != 'true'
+        if: ${{ !env.EQUAL }}
         run: |
           echo "not equal"
 
