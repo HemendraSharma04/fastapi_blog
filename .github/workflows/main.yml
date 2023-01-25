@@ -5,26 +5,34 @@ on:
       - master
 
 jobs:
-  #   migrations_linter_job:
-  #         runs-on: ubuntu-latest
-  #         name: Alert for checking breaking migrations
-  #         steps:
-  #             - uses: actions/checkout@v3
-  #               with:
-  #                   fetch-depth: 0
+  migrations_linter_job:
+    runs-on: ubuntu-latest
+    name: Alert for checking breaking migrations
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-  #             - name: Get changed files
-  #               id: changed-files
-  #               uses: tj-actions/changed-files@v31.0.0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31.0.0
 
-  #             - name: setup python
-  #               uses: actions/setup-python@v4.2.0
-  #               with:
-  #                   python-version: 3.10.8
+      - name: setup python
+        uses: actions/setup-python@v4.2.0
+        with:
+          python-version: 3.10.8
 
-  #             - name: Run migrations linter
-  #               run: |
-  #                   python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+      - name: Run migrations linter
+        run: |
+          python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+
+      - name: Slack notification
+
+        if: failure()
+        uses: slackapi/slack-github-action@v1.23.0
+        with: 
+          channel-id: "CG64UFLLW"
+          slack-message: "Cannot sync branches due to linting error \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
   sync-branches:
     #needs: migrations_linter_job
@@ -148,7 +156,7 @@ jobs:
           echo "equal"
 
       - name: test not equal
-        if: ${{env.EQUAL}} == "false"
+        if: ${{env.EQUAL}} != 'true'
         run: |
           echo "not equal"
 
@@ -165,7 +173,7 @@ jobs:
           target: "develop"
 
       - name: check if conditions
-        if: failure() && ${{env.EQUAL}}
+        if: failure()
         run: |
           echo "failure"
 
