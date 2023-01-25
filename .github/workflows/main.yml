@@ -103,7 +103,7 @@ jobs:
 
       - name: Slack notification
 
-        if: ${{ !env.EQUAL && steps.linter.conclusion != 'success' }}
+        if: ${{ failure() && steps.equal.conclusion != 'success' }}
         uses: slackapi/slack-github-action@v1.23.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -113,7 +113,7 @@ jobs:
 
       - name: Slack notification cc
 
-        if: ${{ env.EQUAL && steps.linter.conclusion != 'success' }}
+        if: ${{ failure() && steps.linter.conclusion == 'success' }}
         uses: slackapi/slack-github-action@v1.23.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
