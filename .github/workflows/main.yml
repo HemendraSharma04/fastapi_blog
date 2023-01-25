@@ -96,11 +96,6 @@ jobs:
         run: |
           python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
-      - name: test2
-        if: ${{ failure() && steps.equal.conclusion == 'success'}}
-        run: |
-          echo "failure2"
-
       - name: Slack notification
 
         if: ${{ failure() && steps.equal.conclusion != 'success' }}
@@ -113,7 +108,7 @@ jobs:
 
       - name: Slack notification cc
 
-        if: ${{ failure() && steps.linter.conclusion == 'success' }}
+        if: ${{ steps.equal.conclusion == 'success'  && steps.linter.conclusion != 'success' }}
         uses: slackapi/slack-github-action@v1.23.0
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
