@@ -129,6 +129,9 @@ jobs:
             myfile.write(master_user)
             myfile.write('\n')
             myfile.write(develop_user)
+            if(master_user==develop_user):
+              myfile.write('\n')
+              myfile.write("EQUAL=true")
         shell: python {0}
 
       - name: get env variable
@@ -139,12 +142,12 @@ jobs:
           echo ${{env.DEVELOP_USER}}
 
       - name: test equal
-        if: ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}}
+        if: ${{env.EQUAL}} == "true"
         run: |
           echo "equal"
 
       - name: test not equal
-        if: ${{env.MASTER_USER}} != ${{env.DEVELOP_USER}}
+        if: ${{env.EQUAL}} == "false"
         run: |
           echo "not equal"
 
@@ -161,7 +164,7 @@ jobs:
           target: "develop"
 
       - name: check if conditions
-        if: failure() && ( ${{env.MASTER_USER}} == ${{env.DEVELOP_USER}} )
+        if: failure() && ${{env.EQUAL}}
         run: |
           echo "failure"
 
