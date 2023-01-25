@@ -93,10 +93,10 @@ jobs:
       - name: test
         if: ${{ failure() }}
         run: |
-          echo "failure"
+          exit 1
 
       - name: test2
-        if: steps.linter.conclusion != 'success'  && ${{ env.EQUAL }}
+        if: ${{steps.linter.conclusion != 'success'}}  &&  ${{ env.EQUAL }}
         run: |
           echo "failure2"
 
