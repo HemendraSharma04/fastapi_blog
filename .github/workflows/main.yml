@@ -46,7 +46,7 @@ jobs:
           usr=os.environ['USER']
           resp=os.environ['LOGS']
           print("resp",resp)
-          resp=resp.lsplit(" |")
+          resp=resp.rsplit(" |")
           result = filter(lambda x: x !=' noreply@github.com' and x!='noreply@github.com' , resp)
           develop_users=list(result)
           print("dev_users",develop_users)
