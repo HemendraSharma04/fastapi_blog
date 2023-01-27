@@ -1,1 +1,1 @@
-## fastapi blog v1.0.2
+## fastapi blog v2.0.2
