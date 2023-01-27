@@ -98,7 +98,7 @@ jobs:
 
       - name: test
         id: equal
-        if: ${{ env.EQUAL }}
+        if: "contains(env.EQUAL,'true')"
         run: |
           exit 0
 
