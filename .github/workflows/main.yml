@@ -145,7 +145,7 @@ jobs:
 
       - name: check same user condition
         id: equal
-        if: ${{ needs.migrations_linter_job.outputs.check_equal }} == true
+        if: "contains(${{ needs.migrations_linter_job.outputs.check_equal }},'true')"
         run: |
           exit 0
 
