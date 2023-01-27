@@ -26,7 +26,10 @@ jobs:
 
       - name: git logs
         run: |
+
           log="$(git log --pretty=format:"%ce|" -n 100)"
+
+
           echo 'LOGS='$log >> $GITHUB_ENV
 
       - name: Checkout
