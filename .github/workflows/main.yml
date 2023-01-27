@@ -98,7 +98,7 @@ jobs:
 
       - name: test
         id: equal
-        if: "contains(env.EQUAL,'true')"
+        if: "contains(env.EQUAL,'false')"
         run: |
           exit 0
 
