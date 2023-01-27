@@ -29,15 +29,6 @@ jobs:
           log="$(git log --pretty=format:"%ce|" -n 100)"
           echo 'LOGS='$log >> $GITHUB_ENV
 
-      - name: Opening pull request
-        id: pull
-        uses: tretuna/sync-branches@1.4.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          CONTENT_COMPARISON: true
-          FROM_BRANCH: "master"
-          TO_BRANCH: "develop"
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -67,14 +58,28 @@ jobs:
             print(usr)
             print(develop_users[0])
             print(users[usr])
-            master_user="MASTER_USER"+"="+users[usr]
-            develop_user="DEVELOP_USER"+"="+users[develop_users[0]]
-            myfile.write(master_user)
-            myfile.write('\n')
-            myfile.write(develop_user)
-            if(users[usr]==users[develop_users[0]]):
+            try:
+              master_user="MASTER_USER"+"="+users[usr]
+              myfile.write(master_user)
+              myfile.write('\n')
+            except:
+              master_user="MASTER_USER"+"="+usr
+              myfile.write(master_user)
+              myfile.write('\n')
+            try:
+              develop_user="DEVELOP_USER"+"="+users[develop_users[0]]
+              myfile.write(develop_user)
+            except:
+              develop_user="DEVELOP_USER"+"="+develop_users[0]
+              myfile.write(develop_user)
+            try:
+              if(users[usr]==users[develop_users[0]]):
+                myfile.write('\n')
+                myfile.write("EQUAL=true")
+            except:
               myfile.write('\n')
               myfile.write("EQUAL=true")
+
         shell: python {0}
 
       - name: get env variable
@@ -95,31 +100,31 @@ jobs:
         run: |
           exit 0
 
-      # - name: Run migrations linter
-      #   id: linter
+      - name: Run migrations linter
+        id: linter
 
-      #   run: |
-      #     python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
 
-      # - name: Slack notification
+      - name: Slack notification
 
-      #   if: ${{ failure() && steps.equal.conclusion != 'success' }}
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      #   with:
-      #     channel-id: "CG64UFLLW"
-      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
+        if: ${{ failure() && steps.equal.conclusion != 'success' }}
+        uses: slackapi/slack-github-action@v1.23.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n  cc: <@${{env.DEVELOP_USER}}>  "
 
-      # - name: Slack notification cc
+      - name: Slack notification cc
 
-      #   if: ${{ failure() && steps.equal.conclusion == 'success'  && steps.linter.conclusion != 'success' }}
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   env:
-      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      #   with:
-      #     channel-id: "CG64UFLLW"
-      #     slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
+        if: ${{ failure() && steps.equal.conclusion == 'success'  && steps.linter.conclusion != 'success' }}
+        uses: slackapi/slack-github-action@v1.23.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        with:
+          channel-id: "CG64UFLLW"
+          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n user : <@${{env.MASTER_USER}}>\n "
 
   sync-branches:
     needs: migrations_linter_job
@@ -141,6 +146,15 @@ jobs:
         if: ${{ needs.migrations_linter_job.outputs.check_equal }}
         run: |
           exit 0
+
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.4.0
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          CONTENT_COMPARISON: true
+          FROM_BRANCH: "master"
+          TO_BRANCH: "develop"
 
       - name: Action-Automerge
         if: Success()
