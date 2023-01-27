@@ -46,8 +46,9 @@ jobs:
           usr=os.environ['USER']
           resp=os.environ['LOGS']
           resp=resp.split("|")
-          result = filter(lambda x: x != "noreply@github.com", resp)
+          result = filter(lambda x: x !="noreply@github.com", resp)
           develop_users=list(result)
+          print(develop_users)
 
           with open('users.json', 'r') as openfile:
             users = json.load(openfile)
@@ -143,7 +144,7 @@ jobs:
 
       - name: check same user condition
         id: equal
-        if: ${{ needs.migrations_linter_job.outputs.check_equal }}
+        if: ${{ needs.migrations_linter_job.outputs.check_equal }} == true
         run: |
           exit 0
 
@@ -174,16 +175,16 @@ jobs:
           echo ${{needs.migrations_linter_job.outputs.master_user}}
           echo ${{needs.migrations_linter_job.outputs.develop_user}}
 
-      - name: merge conflicts in PR
-        if: ${{ failure() && steps.equal.conclusion != 'success' && steps.automerge.conclusion != 'success'}}
+      # - name: merge conflicts in PR
+      #   if: ${{ failure() && steps.equal.conclusion != 'success' && steps.automerge.conclusion != 'success'}}
 
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      #   env:
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\nCommit:${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nmerged to master user : <@${{needs.migrations_linter_job.outputs.master_user}}>\nlatest develop commit user : <@${{needs.migrations_linter_job.outputs.develop_user}}>"
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: "CG64UFLLW"
+      #     slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\nCommit:${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nmerged to master user : <@${{needs.migrations_linter_job.outputs.master_user}}>\nlatest develop commit user : <@${{needs.migrations_linter_job.outputs.develop_user}}>"
 
       # - name: merge conflicts in PR
       #   if: ${{ failure() && steps.equal.conclusion == 'success' && steps.automerge.conclusion != 'success' }}
