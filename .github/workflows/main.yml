@@ -45,10 +45,11 @@ jobs:
           import json
           usr=os.environ['USER']
           resp=os.environ['LOGS']
+          print("resp",resp)
           resp=resp.split("|")
-          result = filter(lambda x: x !="noreply@github.com", resp)
+          result = filter(lambda x: x !=' noreply@github.com', resp)
           develop_users=list(result)
-          print(develop_users)
+          print("dev_users",develop_users)
 
           with open('users.json', 'r') as openfile:
             users = json.load(openfile)
