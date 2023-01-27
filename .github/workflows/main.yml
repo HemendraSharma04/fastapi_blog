@@ -54,10 +54,7 @@ jobs:
 
           env_file = os.getenv('GITHUB_ENV')
           with open(env_file, "w") as myfile:
-            print(users)
-            print(usr)
-            print(develop_users[0])
-            print(users[usr])
+           
             try:
               master_user="MASTER_USER"+"="+users[usr]
               myfile.write(master_user)
