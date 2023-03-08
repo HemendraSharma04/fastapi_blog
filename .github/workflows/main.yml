@@ -5,195 +5,26 @@ on:
       - master
 
 jobs:
-  migrations_linter_job:
+  scan:
     runs-on: ubuntu-latest
-    outputs:
-      master_user: ${{env.MASTER_USER}}
-      develop_user: ${{env.DEVELOP_USER}}
-      check_equal: ${{env.EQUAL}}
-    name: Alert for checking breaking migrations
+    
+    
     steps:
-      - name: setup python
-        uses: actions/setup-python@v4.2.0
+    
+      - name: Run Dastardly Action Step
+        uses: PortSwigger/dastardly-github-action@main
         with:
-          python-version: 3.10.8
-
-      - name: Checkout
-        uses: actions/checkout@v3
+          target-url: 'https://tqj0w8.deta.dev'
+      
+      - name: Publish Test Report
+        if: always()                                   
+        uses: mikepenz/action-junit-report@v3
         with:
-          fetch-depth: 0
-          ref: develop
+          report_paths: '**/dastardly-report.xml'       
+          
 
-      - name: git logs
-        run: |
-          log="$(git log --pretty=format:"%ce|" -n 100)"
-          echo 'LOGS='$log >> $GITHUB_ENV
 
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: set users for slack message
-        id: pshell
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
-          USER: ${{github.event.commits[0].author.email}}
-        run: |
-          import os
-          import json
-          usr=os.environ['USER']
-          resp=os.environ['LOGS']
-          print("resp",resp)
-          resp=resp.split("| ")
-          result = filter(lambda x: x !=' noreply@github.com' and x!='noreply@github.com' and x!='noreply@github.com|', resp)
-          develop_users=list(result)
-          print("dev_users",develop_users)
 
-          with open('users.json', 'r') as openfile:
-            users = json.load(openfile)
 
-          env_file = os.getenv('GITHUB_ENV')
-          with open(env_file, "w") as myfile:
-
-            try:
-              master_user="MASTER_USER"+"="+users[usr]
-              myfile.write(master_user)
-              myfile.write('\n')
-            except:
-              master_user="MASTER_USER"+"="+usr
-              myfile.write(master_user)
-              myfile.write('\n')
-            try:
-              develop_user="DEVELOP_USER"+"="+users[develop_users[0]]
-              myfile.write(develop_user)
-            except:
-              develop_user="DEVELOP_USER"+"="+develop_users[0]
-              myfile.write(develop_user)
-            try:
-              if(users[usr]==users[develop_users[0]]):
-                myfile.write('\n')
-                myfile.write("EQUAL=false")
-              else:
-                myfile.write('\n')
-                myfile.write("EQUAL=false")
-            except:
-              myfile.write('\n')
-              myfile.write("EQUAL=false")
-
-        shell: python {0}
-
-      - name: get env variable
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: |
-          echo ${{env.MASTER_USER}}
-          echo ${{env.DEVELOP_USER}}
-          echo ${{env.EQUAL}}
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v31.0.0
-
-      - name: test
-        id: equal
-        if: "contains(env.EQUAL,'false')"
-        run: |
-          exit 0
-
-      # - name: Run migrations linter
-      #   id: linter
-
-      #   run: |
-      #     python migrations_linter.py ${{ steps.changed-files.outputs.all_changed_files }}
-
-      - name: Slack notification
-
-        if: ${{ failure() && steps.equal.conclusion != 'success' }}
-        uses: slackapi/slack-github-action@v1.23.0
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n merged to master user : <@${{env.MASTER_USER}}>\nlatest develop commit user : <@${{env.DEVELOP_USER}}>  "
-
-      - name: Slack notification cc
-
-        if: ${{ failure() && steps.equal.conclusion == 'success'  && steps.linter.conclusion != 'success' }}
-        uses: slackapi/slack-github-action@v1.23.0
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Cannot sync branches due to breaking migrations \n job:${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} \n merged to master user : <@${{env.MASTER_USER}}>\n "
-
-  sync-branches:
-    needs: migrations_linter_job
-    runs-on: ubuntu-latest
-    name: Syncing branches
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: setup python
-        uses: actions/setup-python@v4.2.0
-        with:
-          python-version: 3.10.8
-
-      - name: check same user condition
-        id: equal
-        if: "contains(needs.migrations_linter_job.outputs.check_equal,'false')"
-        run: |
-          exit 0
-
-      - name: Opening pull request
-        id: pull
-        uses: tretuna/sync-branches@1.4.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          CONTENT_COMPARISON: true
-          FROM_BRANCH: "master"
-          TO_BRANCH: "develop"
-
-      - name: Action-Automerge
-        if: Success()
-        id: "automerge"
-        uses: mtanzi/action-automerge@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pull_request_number: ${{ steps.pull.outputs.pull_request_number }}
-          merge_method: "squash"
-          commit_message: "Merge master into develop"
-          source: "master"
-          target: "develop"
-
-      - name: check if conditions
-        # if: failure()
-        run: |
-          echo ${{needs.migrations_linter_job.outputs.master_user}}
-          echo ${{needs.migrations_linter_job.outputs.develop_user}}
-
-      - name: merge conflicts in PR
-        if: ${{ failure() && steps.equal.conclusion == 'success' && steps.automerge.conclusion != 'success'}}
-
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
-
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job:${{ job.status }}\nCommit:${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nmerged to master user : <@${{needs.migrations_linter_job.outputs.master_user}}>\nlatest develop commit user : <@${{needs.migrations_linter_job.outputs.develop_user}}>"
-
-      - name: merge conflicts in PR
-        if: ${{ failure() && steps.equal.conclusion != 'success' && steps.automerge.conclusion != 'success' }}
-
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
-
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: "CG64UFLLW"
-          slack-message: "Failed to Auto-Merge Master to Develop (Merge conflicts) \n job: ${{ job.status }}\nCommit: ${{ github.event.pull_request.html_url || github.event.head_commit.url }} \nmerged to master user : <@${{needs.migrations_linter_job.outputs.master_user}}>\n"
